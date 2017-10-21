@@ -13,8 +13,15 @@ class View {
 
     /**
      * Display the view of the given name.
+     *
+     * @param string $name Name of the view file to display (without extension).
+     * @param array $args Optional parameters to pass to view as local variables.
      */
-    public static function show($name) {
+    public static function show($name, $args = []) {
+        if ($args) {
+            extract($args);
+        }
+
         include self::getViewsDir() . "/$name.php";
     }
 }

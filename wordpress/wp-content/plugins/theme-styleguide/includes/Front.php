@@ -29,7 +29,10 @@ class Front {
                 return;
             }
 
-            View::show('styleguide');
+            $styleguide = new Styleguide();
+            View::show('styleguide', [
+                'styleguide' => $styleguide
+            ]);
             exit();
         });
     }
