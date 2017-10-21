@@ -11,4 +11,4 @@ wordpress/wp-content/themes/*
 !wordpress/wp-content/themes/sampleTheme
 
 wordpress/wp-content/plugins/*
-!wordpress/wp-content/plugins/styleguide
+!wordpress/wp-content/plugins/theme-styleguide
