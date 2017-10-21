@@ -22,3 +22,4 @@ spl_autoload_register(function($class) {
 });
 
 Admin::init();
+Front::init();

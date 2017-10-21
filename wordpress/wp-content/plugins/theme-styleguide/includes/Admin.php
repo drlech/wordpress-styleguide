@@ -11,6 +11,7 @@ class Admin {
      */
     public static function init() {
         self::addSyleguideToMenu();
+        self::addStyleguideEndpoint();
     }
 
     /**
@@ -47,5 +48,14 @@ class Admin {
             </div>
 
         <?php
+    }
+
+    /**
+     * Register the endpoint for the styleguide page.
+     */
+    public static function addStyleguideEndpoint() {
+        add_action('init', function() {
+            add_rewrite_endpoint('theme-styleguide', EP_ROOT);
+        });
     }
 }
