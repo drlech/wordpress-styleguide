@@ -29,7 +29,24 @@ namespace ThemeStyleguide;
 
     <main>
         <aside>
-            Menu
+            <?php
+
+            View::show('menu-item', ['name' => 'root']);
+
+            foreach ($styleguide->getFolderTree() as $folder) {
+                if (is_array($folder)) {
+                    View::show('menu-item', [
+                        'name' => $folder['name'],
+                        'subitems' => $folder['subitems']
+                    ]);
+
+                    continue;
+                }
+
+                View::show('menu-item', ['name' => $folder]);
+            }
+
+            ?>
         </aside>
 
         <div class="components">

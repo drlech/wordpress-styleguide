@@ -2,6 +2,8 @@
 
 html {
     --bordersColor: #505050;
+    --highlight: lightblue;
+    --highlightRgb: 173, 216, 230;
 }
 
 /* Resets and global styles */
@@ -64,4 +66,25 @@ main aside {
 
 .components {
     flex-grow: 1;
+}
+
+/* Menu displaying component tree */
+
+.menu-item .box {
+    padding: 5px;
+
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: .1s background-color;
+}
+
+.menu-item .box:hover {
+    background-color: rgba(var(--highlightRgb), .3);
+}
+
+.menu-item .subitems {
+    display: none;
+
+    padding-left: 10px;
 }

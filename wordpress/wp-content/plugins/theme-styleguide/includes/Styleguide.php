@@ -51,6 +51,52 @@ class Styleguide {
         $this->prepare();
     }
 
+    /* Public API */
+
+    public function getFolderTree() {
+        return $this->getFoldersFromFiles($this->files);
+    }
+
+    /* Helpers for public API */
+
+    private function getFoldersFromFiles($where, $name = '') {
+        $result = [];
+
+        // Folders are arrays contining their content,
+        // files are just strings.
+        $folders = array_filter($where, function($item) {
+            return is_array($item);
+        });
+
+        if (empty($folders)) {
+            return $name;
+        }
+
+        // Sort alphabetically, so it reflects whatever's
+        // on the hard drive.
+        ksort($folders);
+
+        // Recursively scan all the folders.
+        foreach ($folders as $name => $folder) {
+            $subitems = $this->getFoldersFromFiles($folders[$name], $name);
+
+            if (is_array($subitems)) {
+                $result[] = [
+                    'name' => $name,
+                    'subitems' => $subitems
+                ];
+
+                continue;
+            }
+
+            $result[] = $name;
+        }
+
+        return $result;
+    }
+
+    /* Initialization / class operations */
+
     /**
      * Set the state of the styleguide.
      *
