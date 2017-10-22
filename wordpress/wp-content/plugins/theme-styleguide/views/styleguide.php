@@ -54,5 +54,6 @@ namespace ThemeStyleguide;
         </div>
     </main>
 
+    <script type="text/javascript" src="<?php echo Assets::getAsset('script.js'); ?>"></script>
 </body>
 </html>
