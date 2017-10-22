@@ -115,4 +115,10 @@ class Styleguide {
 
         return $result;
     }
+
+    /* Helper functions displaying general styleguide info */
+
+    public function getThemeName() {
+        return wp_get_theme();
+    }
 }

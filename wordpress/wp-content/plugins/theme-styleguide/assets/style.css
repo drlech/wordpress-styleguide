@@ -12,3 +12,25 @@ body {
     font-size: 16px;
     line-height: 20px;
 }
+
+/* Typography */
+
+h1 {
+    margin: 0;
+
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 46px;
+}
+
+/* Page header displays theme name and some basic information */
+
+.page-header {
+    padding: 30px;
+
+    border-bottom: 2px solid #505050;
+}
+
+.additional-header-info {
+    font-weight: 300;
+}
