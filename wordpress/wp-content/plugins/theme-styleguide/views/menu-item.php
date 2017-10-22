@@ -16,7 +16,7 @@ namespace ThemeStyleguide;
             <?php
 
             foreach ($subitems as $item) {
-                if (is_array($item)) {
+                if (array_key_exists('subitems', $item)) {
                     View::show('menu-item', [
                         'name' => $item['name'],
                         'subitems' => $item['subitems']
@@ -25,7 +25,7 @@ namespace ThemeStyleguide;
                     continue;
                 }
 
-                View::show('menu-item', ['name' => $item]);
+                View::show('menu-item', ['name' => $item['name']]);
             }
 
             ?>

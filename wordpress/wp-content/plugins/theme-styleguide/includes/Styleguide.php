@@ -59,7 +59,7 @@ class Styleguide {
 
     /* Helpers for public API */
 
-    private function getFoldersFromFiles($where, $name = '') {
+    private function getFoldersFromFiles($where, $name = '', $currentPath = '') {
         $result = [];
 
         // Folders are arrays contining their content,
@@ -78,7 +78,8 @@ class Styleguide {
 
         // Recursively scan all the folders.
         foreach ($folders as $name => $folder) {
-            $subitems = $this->getFoldersFromFiles($folders[$name], $name);
+            $path = preg_replace('/^\//', '', "$currentPath/$name");
+            $subitems = $this->getFoldersFromFiles($folders[$name], $name, $path);
 
             if (is_array($subitems)) {
                 $result[] = [
@@ -89,7 +90,10 @@ class Styleguide {
                 continue;
             }
 
-            $result[] = $name;
+            $result[] = [
+                'name' => $name,
+                'path' => $path
+            ];
         }
 
         return $result;
