@@ -2,6 +2,8 @@
 
 namespace ThemeStyleguide;
 
+defined('ABSPATH') or die();
+
 class View {
 
     /**

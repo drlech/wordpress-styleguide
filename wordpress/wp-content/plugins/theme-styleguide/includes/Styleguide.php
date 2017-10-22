@@ -79,10 +79,18 @@ class Styleguide {
         return $fullPath;
     }
 
+    /**
+     * Scan the components directory to retrieve all files to be displayed.
+     */
     private function prepare() {
         $this->files = $this->prepareDir('');
     }
 
+    /**
+     * Scan a single subdirectory under components directory.
+     *
+     * @param string $dir Path under components directory.
+     */
     private function prepareDir($dir) {
         $result = [];
         $files = scandir($this->getComponent($dir));
