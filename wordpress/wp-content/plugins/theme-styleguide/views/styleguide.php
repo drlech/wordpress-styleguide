@@ -29,9 +29,11 @@ namespace ThemeStyleguide;
 
     <main>
         <aside>
+            Menu
         </aside>
 
-        <div>
+        <div class="components">
+            Main part
         </div>
     </main>
 

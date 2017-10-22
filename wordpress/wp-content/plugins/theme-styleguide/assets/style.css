@@ -1,4 +1,11 @@
+/* Variables */
+
+html {
+    --bordersColor: #505050;
+}
+
 /* Resets and global styles */
+
 *,
 *:before,
 *:after {
@@ -28,9 +35,33 @@ h1 {
 .page-header {
     padding: 30px;
 
-    border-bottom: 2px solid #505050;
+    border-bottom: 2px solid var(--bordersColor);
 }
 
 .additional-header-info {
     font-weight: 300;
+}
+
+/* Main element displays menu in the sidebar and main content beside it */
+
+main {
+    display: flex;
+}
+
+main aside,
+.components {
+    padding: 15px;
+
+    border-bottom: 1px solid var(--bordersColor);
+}
+
+main aside {
+    width: 300px;
+    flex-shrink: 0;
+
+    border-right: 1px solid var(--bordersColor);
+}
+
+.components {
+    flex-grow: 1;
 }
