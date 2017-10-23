@@ -90,7 +90,7 @@ class Styleguide {
     public function getLinkFor($path) {
         $url = $this->getBaseUrl();
 
-        if (!$path || 'root' === $path || !$this->doesPathExist($this->files, $path)) {
+        if (!$path || 'root' === $path || !$this->getFilesFrom($this->files, $path)) {
             return $url;
         }
 
@@ -118,6 +118,36 @@ class Styleguide {
         }
 
         return strpos($currentPath, $path) === 0;
+    }
+
+    /**
+     * Get the list of all php files located under
+     * given path.
+     *
+     * @param string $path
+     */
+    public function getFiles($path) {
+        $files = null;
+        if ('root' === $path || !$path) {
+            $files = $this->files;
+        } else {
+            $files = $this->getFilesFrom($this->files, $path);
+        }
+
+        // Path was not found
+        if (!$files) {
+            return false;
+        }
+
+        // Take only files, no folders
+        $files = array_filter($files, function($item) {
+            return !is_array($item);
+        });
+
+        // In alphabetical order
+        sort($files);
+
+        return $files;
     }
 
     /* Helpers for public API */
@@ -173,12 +203,12 @@ class Styleguide {
      * @param array $where
      * @param string $path
      */
-    private function doesPathExist($where, $path) {
+    private function getFilesFrom($where, $path) {
         $separatorPos = strpos($path, '/');
 
         if (false === $separatorPos) {
             if (array_key_exists($path, $where)) {
-                return true;
+                return $where[$path];
             }
 
             return false;
@@ -190,7 +220,7 @@ class Styleguide {
         }
 
         $rest = substr($path, $separatorPos + 1);
-        return $this->doesPathExist($where[$key], $rest);
+        return $this->getFilesFrom($where[$key], $rest);
     }
 
     /* Initialization / class operations */
