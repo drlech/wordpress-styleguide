@@ -82,7 +82,7 @@ class Styleguide {
     public function getLinkFor($path) {
         $url = $this->getBaseUrl();
 
-        if ('root' === $path) {
+        if (!$path || 'root' === $path) {
             return $url;
         }
 

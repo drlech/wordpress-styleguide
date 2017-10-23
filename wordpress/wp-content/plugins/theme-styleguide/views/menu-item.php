@@ -5,10 +5,12 @@
 
 namespace ThemeStyleguide;
 
+$styleguide = Styleguide::instance();
+
 ?>
 
  <div class="menu-item">
-    <div class="box"><?php echo $item['name']; ?></div>
+    <a href="<?php echo $styleguide->getLinkFor($item['path']); ?>" class="box"><?php echo $item['name']; ?></a>
 
     <?php if (isset($item['subitems'])): ?>
         <div class="subitems">

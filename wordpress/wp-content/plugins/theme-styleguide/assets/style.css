@@ -71,11 +71,15 @@ main aside {
 /* Menu displaying component tree */
 
 .menu-item .box {
+    display: block;
     padding: 5px;
 
-    background-color: transparent;
+    color: black;
+    text-decoration: none;
 
+    background-color: transparent;
     cursor: pointer;
+
     transition: .1s background-color;
 }
 
