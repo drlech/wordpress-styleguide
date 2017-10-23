@@ -31,7 +31,7 @@ class Front {
                 return;
             }
 
-            $styleguide = new Styleguide();
+            $styleguide = Styleguide::instance();
             View::show('styleguide', [
                 'styleguide' => $styleguide
             ]);

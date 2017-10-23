@@ -7,6 +7,13 @@ defined('ABSPATH') or die();
 class Styleguide {
 
     /**
+     * A singleton of this class.
+     *
+     * @var Styleguide
+     */
+    private static $_instance = null;
+
+    /**
      * A path relative to the current theme where the components
      * to be displayed in the styleguide are located.
      *
@@ -39,7 +46,7 @@ class Styleguide {
      */
     private $files = [];
 
-    public function __construct() {
+    private function __construct() {
         $this->setState('PENDING');
 
         if (!$this->getComponent()) {
@@ -51,6 +58,17 @@ class Styleguide {
         $this->prepare();
     }
 
+    /**
+     * Create a singleton of this class.
+     */
+    public static function instance() {
+        if (self::$_instance) {
+            return self::$_instance;
+        }
+
+        return new self();
+    }
+
     /* Public API */
 
     /**
@@ -59,6 +77,16 @@ class Styleguide {
      */
     public function getFolderTree() {
         return $this->getFoldersFromFiles($this->files);
+    }
+
+    public function getLinkFor($path) {
+        $url = $this->getBaseUrl();
+
+        if ('root' === $path) {
+            return $url;
+        }
+
+        return add_query_arg('path', $path, $url);
     }
 
     /* Helpers for public API */
@@ -97,6 +125,13 @@ class Styleguide {
         }
 
         return $result;
+    }
+
+    /**
+     * Get the URL to the styleguide page.
+     */
+    private function getBaseUrl() {
+        return get_bloginfo('url') . '/styleguide';
     }
 
     /* Initialization / class operations */
