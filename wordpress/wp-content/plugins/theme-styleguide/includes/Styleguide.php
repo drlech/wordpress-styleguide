@@ -97,6 +97,29 @@ class Styleguide {
         return add_query_arg('path', $path, $url);
     }
 
+    /**
+     * Check if we are currently displaying styleguide
+     * for the given path.
+     *
+     * @param string $path
+     */
+    public function isPathActive($path) {
+        $currentPath = false;
+        if (isset($_GET['path'])) {
+            $currentPath = $_GET['path'];
+        }
+
+        if (!$currentPath && 'root' === $path) {
+            return true;
+        }
+
+        if (!$currentPath) {
+            return false;
+        }
+
+        return $currentPath === $path;
+    }
+
     /* Helpers for public API */
 
     private function getFoldersFromFiles($where, $name = '', $currentPath = '') {

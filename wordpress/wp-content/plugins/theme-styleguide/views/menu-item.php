@@ -6,21 +6,30 @@
 namespace ThemeStyleguide;
 
 $styleguide = Styleguide::instance();
+$menuItem = new \HTMLTag('div', 'menu-item');
+
+if ($styleguide->isPathActive($item['path'])) {
+    $menuItem->addClass('active');
+}
+
+$menuItem->open();
 
 ?>
 
- <div class="menu-item">
-    <a href="<?php echo $styleguide->getLinkFor($item['path']); ?>" class="box"><?php echo $item['name']; ?></a>
+<a href="<?php echo $styleguide->getLinkFor($item['path']); ?>" class="box"><?php echo $item['name']; ?></a>
 
-    <?php if (isset($item['subitems'])): ?>
-        <div class="subitems">
-            <?php
+<?php if (isset($item['subitems'])): ?>
+    <div class="subitems">
+        <?php
 
-            foreach ($item['subitems'] as $item) {
-                View::show('menu-item', ['item' => $item]);
-            }
+        foreach ($item['subitems'] as $item) {
+            View::show('menu-item', ['item' => $item]);
+        }
 
-            ?>
-        </div>
-    <?php endif; ?>
- </div>
+        ?>
+    </div>
+<?php endif; ?>
+
+ <?php
+
+ $menuItem->close();

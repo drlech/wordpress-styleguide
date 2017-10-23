@@ -7,6 +7,7 @@ namespace ThemeStyleguide;
 
 defined('ABSPATH') or die();
 
+// Autoload plugin classes
 spl_autoload_register(function($class) {
     $namespace = 'ThemeStyleguide';
 
@@ -17,9 +18,18 @@ spl_autoload_register(function($class) {
 
     // Remove namespace root from the class
     $class = preg_replace("/^$namespace\\\/", '', $class);
+    $filename = __DIR__ . "/includes/$class.php";
 
-    require_once __DIR__ . "/includes/$class.php";
+    if (!file_exists($filename)) {
+        throw new DomainException("Class $class not found.");
+    }
+
+    require_once $filename;
 });
 
+// Add everything from lib
+require_once 'lib/HTMLTag.php';
+
+// Init
 Admin::init();
 Front::init();

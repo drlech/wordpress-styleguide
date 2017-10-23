@@ -92,3 +92,7 @@ main aside {
 
     padding-left: 10px;
 }
+
+.menu-item.active .subitems {
+    display: block;
+}
