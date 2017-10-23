@@ -34,7 +34,7 @@ namespace ThemeStyleguide;
             View::show('menu-item', [
                 'item' => [
                     'name' => 'root',
-                    'link' => 'root'
+                    'path' => 'root'
                 ]
             ]);
 

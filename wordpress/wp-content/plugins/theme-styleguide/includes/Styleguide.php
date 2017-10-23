@@ -83,21 +83,17 @@ class Styleguide {
         // Recursively scan all the folders.
         foreach ($folders as $name => $folder) {
             $path = preg_replace('/^\//', '', "$currentPath/$name");
-            $subitems = $this->getFoldersFromFiles($folders[$name], $name, $path);
-
-            if (is_array($subitems)) {
-                $result[] = [
-                    'name' => $name,
-                    'subitems' => $subitems
-                ];
-
-                continue;
-            }
-
-            $result[] = [
+            $item = [
                 'name' => $name,
                 'path' => $path
             ];
+
+            $subitems = $this->getFoldersFromFiles($folders[$name], $name, $path);
+            if (is_array($subitems)) {
+                $item['subitems'] = $subitems;
+            }
+
+            $result[] = $item;
         }
 
         return $result;
