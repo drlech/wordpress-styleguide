@@ -79,10 +79,18 @@ class Styleguide {
         return $this->getFoldersFromFiles($this->files);
     }
 
+    /**
+     * Retrieve a link to the styleguide displaying a folder
+     * specified by path.
+     * This function checks if the specified folder exists
+     * in the files array and is recognized by the styleguide.
+     *
+     * @param string $path
+     */
     public function getLinkFor($path) {
         $url = $this->getBaseUrl();
 
-        if (!$path || 'root' === $path) {
+        if (!$path || 'root' === $path || !$this->doesPathExist($this->files, $path)) {
             return $url;
         }
 
@@ -131,7 +139,35 @@ class Styleguide {
      * Get the URL to the styleguide page.
      */
     private function getBaseUrl() {
-        return get_bloginfo('url') . '/styleguide';
+        return get_bloginfo('url') . '/theme-styleguide';
+    }
+
+    /**
+     * Check if a given path exists in the given array.
+     * Path is a /-separated string, where each part references next
+     * level of the array.
+     *
+     * @param array $where
+     * @param string $path
+     */
+    private function doesPathExist($where, $path) {
+        $separatorPos = strpos($path, '/');
+
+        if (false === $separatorPos) {
+            if (array_key_exists($path, $where)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        $key = substr($path, 0, $separatorPos);
+        if (!array_key_exists($key, $where)) {
+            return false;
+        }
+
+        $rest = substr($path, $separatorPos + 1);
+        return $this->doesPathExist($where[$key], $rest);
     }
 
     /* Initialization / class operations */
