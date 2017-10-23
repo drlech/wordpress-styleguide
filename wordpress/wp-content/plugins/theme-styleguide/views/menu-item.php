@@ -1,7 +1,6 @@
 <?php
 /**
- * @var string name
- * @var array subitems
+ * @var array $item
  */
 
 namespace ThemeStyleguide;
@@ -9,23 +8,14 @@ namespace ThemeStyleguide;
 ?>
 
  <div class="menu-item">
-    <div class="box"><?php echo $name; ?></div>
+    <div class="box"><?php echo $item['name']; ?></div>
 
-    <?php if (!empty($subitems)): ?>
+    <?php if (isset($item['subitems'])): ?>
         <div class="subitems">
             <?php
 
-            foreach ($subitems as $item) {
-                if (array_key_exists('subitems', $item)) {
-                    View::show('menu-item', [
-                        'name' => $item['name'],
-                        'subitems' => $item['subitems']
-                    ]);
-
-                    continue;
-                }
-
-                View::show('menu-item', ['name' => $item['name']]);
+            foreach ($item['subitems'] as $item) {
+                View::show('menu-item', ['item' => $item]);
             }
 
             ?>

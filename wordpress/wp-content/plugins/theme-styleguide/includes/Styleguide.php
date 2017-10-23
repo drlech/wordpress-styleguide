@@ -53,6 +53,10 @@ class Styleguide {
 
     /* Public API */
 
+    /**
+     * Convert $this->files to an array that can be passed
+     * to the view.
+     */
     public function getFolderTree() {
         return $this->getFoldersFromFiles($this->files);
     }

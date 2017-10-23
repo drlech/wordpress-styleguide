@@ -31,19 +31,15 @@ namespace ThemeStyleguide;
         <aside>
             <?php
 
-            View::show('menu-item', ['name' => 'root']);
+            View::show('menu-item', [
+                'item' => [
+                    'name' => 'root',
+                    'link' => 'root'
+                ]
+            ]);
 
             foreach ($styleguide->getFolderTree() as $folder) {
-                if (is_array($folder)) {
-                    View::show('menu-item', [
-                        'name' => $folder['name'],
-                        'subitems' => $folder['subitems']
-                    ]);
-
-                    continue;
-                }
-
-                View::show('menu-item', ['name' => $folder]);
+                View::show('menu-item', ['item' => $folder]);
             }
 
             ?>
