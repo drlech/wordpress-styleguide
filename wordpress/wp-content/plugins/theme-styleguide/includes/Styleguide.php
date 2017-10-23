@@ -117,7 +117,7 @@ class Styleguide {
             return false;
         }
 
-        return $currentPath === $path;
+        return strpos($currentPath, $path) === 0;
     }
 
     /* Helpers for public API */
