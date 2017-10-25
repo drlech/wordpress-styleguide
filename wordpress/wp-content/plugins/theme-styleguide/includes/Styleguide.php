@@ -126,7 +126,7 @@ class Styleguide {
      *
      * @param string $path
      */
-    public function getFiles($path) {
+    public function getFiles($path = 'root') {
         $files = null;
         if ('root' === $path || !$path) {
             $files = $this->files;

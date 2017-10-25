@@ -1,5 +1,7 @@
 <?php
 /**
+ * The styleguide page.
+ *
  * @var Styleguide $styleguide
  */
 
@@ -31,6 +33,8 @@ namespace ThemeStyleguide;
         <aside>
             <?php
 
+            // Display menu item corresponding to the root of the
+            // folder containing the components
             View::show('menu-item', [
                 'item' => [
                     'name' => 'root',
@@ -38,6 +42,8 @@ namespace ThemeStyleguide;
                 ]
             ]);
 
+            // Display (nested) menu structure reflecting the folder structure
+            // of the components folder
             foreach ($styleguide->getFolderTree() as $folder) {
                 View::show('menu-item', ['item' => $folder]);
             }
@@ -46,7 +52,28 @@ namespace ThemeStyleguide;
         </aside>
 
         <div class="components">
-            Main part
+            <?php
+
+            $path = 'root';
+            if (isset($_GET['path'])) {
+                $path = $_GET['path'];
+            }
+
+            $files = $styleguide->getFiles($path);
+            if (!$files) {
+                ?>
+
+                <p><?php _e('There\'s nothing here. Move along.', 'wordpress-styleguide'); ?></p>
+
+                <?php
+            } else {
+                View::show('previews', [
+                    'path' => $path,
+                    'files' => $files
+                ]);
+            }
+
+            ?>
         </div>
     </main>
 </body>

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Menu items displayed in the sidebar of styleguide.
+ *
  * @var array $item
  */
 
