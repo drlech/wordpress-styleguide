@@ -11,6 +11,7 @@ class Front {
      */
     public static function init() {
         self::addStyleguidePage();
+        self::addPreviewPage();
     }
 
     /**
@@ -35,6 +36,29 @@ class Front {
             View::show('styleguide', [
                 'styleguide' => $styleguide
             ]);
+            exit();
+        });
+    }
+
+    /**
+     * Register a query var, and based on its presence
+     * display the component preview.
+     */
+    public static function addPreviewPage() {
+        add_filter('query_vars', function ($vars) {
+            $vars[] = 'theme-styleguide-preview';
+
+            return $vars;
+        });
+
+        add_action('template_redirect', function() {
+            global $wp_query;
+
+            if (false === get_query_var('theme-styleguide-preview', false)) {
+                return;
+            }
+
+            echo 'This is a preview!';
             exit();
         });
     }

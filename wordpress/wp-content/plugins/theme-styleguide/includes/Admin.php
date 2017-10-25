@@ -12,6 +12,7 @@ class Admin {
     public static function init() {
         self::addSyleguideToMenu();
         self::addStyleguideEndpoint();
+        self::addPreviewEndpoint();
     }
 
     /**
@@ -56,6 +57,15 @@ class Admin {
     public static function addStyleguideEndpoint() {
         add_action('init', function() {
             add_rewrite_endpoint('theme-styleguide', EP_ROOT);
+        });
+    }
+
+    /**
+     * Add an endpoint for displaying the previews of the components.
+     */
+    public static function addPreviewEndpoint() {
+        add_action('init', function() {
+            add_rewrite_endpoint('theme-styleguide-preview', EP_ROOT);
         });
     }
 }
