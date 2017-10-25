@@ -150,6 +150,13 @@ class Styleguide {
         return $files;
     }
 
+    /**
+     * Retrieve the directory containing the components.
+     */
+    public function getComponentsDir() {
+        return get_template_directory() . '/' . self::$componentsLocation;
+    }
+
     /* Helpers for public API */
 
     private function getFoldersFromFiles($where, $name = '', $currentPath = '') {

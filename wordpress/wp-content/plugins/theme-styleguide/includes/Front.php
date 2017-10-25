@@ -58,7 +58,10 @@ class Front {
                 return;
             }
 
-            echo 'This is a preview!';
+            $preview = new Preview();
+            View::show('preview', [
+                'preview' => $preview
+            ]);
             exit();
         });
     }
