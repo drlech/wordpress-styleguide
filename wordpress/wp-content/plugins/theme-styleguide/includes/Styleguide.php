@@ -151,10 +151,23 @@ class Styleguide {
     }
 
     /**
-     * Retrieve the directory containing the components.
+     * Retrieve the full path to the component.
+     *
+     * @param string $path
+     * @param string $filename
      */
-    public function getComponentsDir() {
-        return get_template_directory() . '/' . self::$componentsLocation;
+    public function getComponentPath($path, $filename) {
+        $base = get_template_directory() . '/' . self::$componentsLocation;
+
+        if ('root' === $path) {
+            $path = '';
+        }
+
+        if ($path) {
+            $base .= "/$path";
+        }
+
+        return "$base/$filename";
     }
 
     /* Helpers for public API */

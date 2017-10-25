@@ -96,3 +96,12 @@ main aside {
 .menu-item.active .subitems {
     display: block;
 }
+
+/* Component preview */
+
+iframe {
+    display: block;
+    width: 100%;
+
+    border: none;
+}

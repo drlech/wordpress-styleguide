@@ -48,9 +48,12 @@ class Preview {
 
     /* Public API */
 
+    /**
+     * Print the component.
+     */
     public function insert() {
         $styleguide = Styleguide::instance();
-        $file = $styleguide->getComponentsDir() . '/' . $this->filename;
+        $file = $styleguide->getComponentPath($this->path, $this->filename);
 
         // Sanity check.
         // We *should* be certain that the file exists after constructor.
