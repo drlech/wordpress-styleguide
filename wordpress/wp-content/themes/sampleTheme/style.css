@@ -1,3 +1,67 @@
 /*
 Theme Name: Sample theme
 */
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+/* button.php */
+
+button {
+    display: inline-block;
+    min-width: 110px;
+    padding: 10px 15px 12px;
+
+    margin: 15px 5px;
+
+    font: 700 12px/1 'Open Sans', sans-serif;
+
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 1px rgba(0,0,0,.1), inset 0 -10px 20px rgba(0,0,0,.1);
+    cursor: pointer;
+}
+
+/* quote.php */
+
+blockquote {
+    position: relative;
+
+    display:block;
+    padding: 15px 20px 15px 45px;
+    margin: 0 0 20px;
+
+    font-family: Georgia, serif;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #666;
+    text-align: justify;
+
+    background: #fff;
+    box-shadow: 2px 2px 15px #ccc;
+    border-left: 15px solid #c76c0c;
+    border-right: 2px solid #c76c0c;
+}
+
+blockquote::before{
+    content: "\201C"; /* Unicode for Left Double Quote */
+
+    position: absolute;
+    left: 10px;
+    top:5px;
+
+    font-family: Georgia, serif;
+    font-size: 60px;
+    font-weight: bold;
+    color: #999;
+  }
