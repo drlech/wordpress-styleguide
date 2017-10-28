@@ -1,3 +1,14 @@
-<?php
+<html>
+<head>
+    <title>WordPress Theme</title>
 
-echo 'This is WordPress theme';
+    <?php wp_head(); ?>
+</head>
+
+<body>
+
+    <p>This is a sample WordPress theme. Hi!</p>
+
+    <?php wp_footer(); ?>
+</body>
+</html>
