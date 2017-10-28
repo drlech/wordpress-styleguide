@@ -51,7 +51,7 @@ namespace ThemeStyleguide;
             ?>
         </aside>
 
-        <div class="components">
+        <section class="components">
             <?php
 
             $path = 'root';
@@ -74,7 +74,9 @@ namespace ThemeStyleguide;
             }
 
             ?>
-        </div>
+        </section>
     </main>
+
+    <script type="text/javascript" src="<?php echo Assets::getAsset('styleguide.js'); ?>"></script>
 </body>
 </html>

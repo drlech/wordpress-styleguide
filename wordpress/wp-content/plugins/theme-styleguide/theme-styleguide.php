@@ -21,7 +21,7 @@ spl_autoload_register(function($class) {
     $filename = __DIR__ . "/includes/$class.php";
 
     if (!file_exists($filename)) {
-        throw new DomainException("Class $class not found.");
+        throw new \DomainException("Class $class not found.");
     }
 
     require_once $filename;
