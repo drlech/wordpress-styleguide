@@ -32,6 +32,12 @@ h1 {
     line-height: 46px;
 }
 
+h3 {
+    margin-top: 0;
+
+    font-weight: 300;
+}
+
 /* Page header displays theme name and some basic information */
 
 .page-header {
@@ -98,6 +104,22 @@ main aside {
 }
 
 /* Component preview */
+
+.component-preview {
+    padding-bottom: 20px;
+
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid var(--bordersColor);
+}
+
+.component-preview:last-child {
+    border-bottom: none;
+}
+
+.component-preview h3 {
+    margin-bottom: 20px;
+}
 
 iframe {
     display: block;
