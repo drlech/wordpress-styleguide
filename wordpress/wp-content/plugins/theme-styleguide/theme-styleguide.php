@@ -31,5 +31,8 @@ spl_autoload_register(function($class) {
 require_once 'lib/HTMLTag.php';
 
 // Init
-Admin::init();
-Front::init();
+if (is_admin()) {
+    Admin::init();
+} else {
+    Front::init();
+}
