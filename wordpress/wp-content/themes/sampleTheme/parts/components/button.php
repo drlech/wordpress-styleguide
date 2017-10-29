@@ -1,6 +1,9 @@
 <?php
 /**
- * @var string $text
+ * This is just a comment.
+ *
+ * @var string $text   This is a comment
+ * @var int    $number
  */
 
 ?>

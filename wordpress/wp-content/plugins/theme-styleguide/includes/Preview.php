@@ -71,4 +71,59 @@ class Preview {
     public function insert() {
         include $this->filepath;
     }
+
+    /* Private API */
+
+    /**
+     * Extract the file comment from the component file.
+     *
+     * @return string
+     */
+    private function getFileDoc() {
+        $contents = file_get_contents($this->filepath);
+
+        $hasComment = preg_match('/^[\s\n\r]*<\?php[\s\n\r]*(\/\*.+?\*\/)/s', $contents, $matches);
+        if (!$hasComment) {
+            return false;
+        }
+
+        return $matches[1];
+    }
+
+    /**
+     * Parse the file comment that's in phpDoc format and extract information
+     * about all variables.
+     *
+     * @return array
+     */
+    private function getVarsFromDoc($doc) {
+        // Grab all @var declarations from the doc
+        $hasVars = preg_match_all('/\@var.+/', $doc, $matches);
+        if (!$hasVars) {
+            return false;
+        }
+
+        // Parse all @var declarations and extract name of the variable,
+        // type, and optinal comment.
+        $variables = [];
+        foreach ($matches[0] as $declaration) {
+            $hasCorrectFormat = preg_match('/\@var\s+(\w+)\s+(\$\w+)(\s+(.+))?/', $declaration, $varMatch);
+            if (!$hasCorrectFormat) {
+                continue;
+            }
+
+            $var = [
+                'name' => preg_replace('/^\$?/', '', $varMatch[2]),
+                'type' => $varMatch[1]
+            ];
+
+            if (isset($varMatch[4])) {
+                $var['comment'] = $varMatch[4];
+            }
+
+            $variables[] = $var;
+        }
+
+        return $variables;
+    }
 }
