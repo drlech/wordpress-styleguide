@@ -124,7 +124,7 @@ class StringGen extends Generator {
         // In english there's approx. between 0.6 and 1.8 words per sentence,
         // depending on author. There are no easily available stats for latin,
         // so we'll just use english stats.
-        $wordsWithCommas = mt_rand(7, 18) / 10;
+        $wordsWithCommas = mt_rand(6, 18) / 10;
         $probOfComma = abs(($wordsWithCommas * 100) / $sentenceLength);
 
         // Skipping the last word because it already has a period.
