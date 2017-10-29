@@ -42,7 +42,7 @@ class Preview {
         }
 
         if (!in_array($this->filename, $files)) {
-            throw new \DomainException('Invalid parameters');
+            throw new \DomainException('Invalid parameters.');
         }
     }
 
