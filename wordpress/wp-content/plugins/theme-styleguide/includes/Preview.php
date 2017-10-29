@@ -69,10 +69,54 @@ class Preview {
      * Print the component.
      */
     public function insert() {
+        $values = $this->generateVariableValues();
+
+        if ($values) {
+            extract($values);
+        }
+
         include $this->filepath;
     }
 
     /* Private API */
+
+    /**
+     * Get the file doc variables and generate sample values
+     * for all of them. Those values will be passed to the displayed
+     * preview so it can display properly.
+     *
+     * @return array Associative array - variable name => generated value.
+     */
+    private function generateVariableValues() {
+        $fileDoc = $this->getFileDoc();
+        if (!$fileDoc) {
+            return false;
+        }
+
+        $vars = $this->getVarsFromDoc($fileDoc);
+        if (!$vars) {
+            return false;
+        }
+
+        // At this point the file doc exists and contains variables
+        // and we have extracted them. We can start generating sample values.
+        $generators = Generators\Generator::getGenerators();
+        $generatedValues = [];
+
+        foreach ($vars as $var) {
+            // Either variable has no type (which should not be possible, as we validate
+            // it earlier), or we don't have generator for given variable type.
+            // In that case - skip that variable and hope nothing breaks.
+            if (!isset($var['type']) || !isset($generators[$var['type']])) {
+                continue;
+            }
+
+            $generator = new $generators[$var['type']]($var['comment']);
+            $generatedValues[$var['name']] = $generator->generate();
+        }
+
+        return $generatedValues;
+    }
 
     /**
      * Extract the file comment from the component file.
@@ -113,8 +157,9 @@ class Preview {
             }
 
             $var = [
-                'name' => preg_replace('/^\$?/', '', $varMatch[2]),
-                'type' => $varMatch[1]
+                'name'    => preg_replace('/^\$?/', '', $varMatch[2]),
+                'type'    => $varMatch[1],
+                'comment' => false
             ];
 
             if (isset($varMatch[4])) {

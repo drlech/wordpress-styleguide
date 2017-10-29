@@ -2,10 +2,9 @@
 /**
  * This is just a comment.
  *
- * @var string $text   This is a comment
- * @var int    $number
+ * @var string $text
  */
 
 ?>
 
-<button>Parameter will come soon.</button>
+<button><?php echo $text; ?></button>
