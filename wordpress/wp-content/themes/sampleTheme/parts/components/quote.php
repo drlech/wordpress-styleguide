@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var string $text different
+ */
+?>
+
 <blockquote>
-    Suspendisse non turpis condimentum, commodo felis id, dictum massa. Aliquam interdum mi sed ex sagittis egestas. Suspendisse ac est quis diam venenatis ultricies. Aliquam eleifend consequat quam ac scelerisque. Vivamus diam mauris, egestas ac ornare eu, pretium at mi. Nulla facilisi. Nulla porttitor hendrerit leo consectetur accumsan. Nullam diam elit, luctus vel tempor a, molestie sed metus. Proin ut molestie lorem. Suspendisse iaculis odio id augue accumsan ultrices. Nulla facilisi. Sed venenatis, quam id suscipit blandit, tortor mauris tempus nisl, eget hendrerit ipsum massa at tortor. Praesent at magna turpis. Fusce mollis volutpat elit vitae imperdiet. In a luctus purus. Morbi aliquam at lectus semper volutpat.
+    <?php echo $text; ?>
 </blockquote>
