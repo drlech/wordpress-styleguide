@@ -104,7 +104,7 @@ class Preview {
         }
 
         // Parse all @var declarations and extract name of the variable,
-        // type, and optinal comment.
+        // type, and optional comment.
         $variables = [];
         foreach ($matches[0] as $declaration) {
             $hasCorrectFormat = preg_match('/\@var\s+(\w+)\s+(\$\w+)(\s+(.+))?/', $declaration, $varMatch);
