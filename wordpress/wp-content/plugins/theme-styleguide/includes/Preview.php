@@ -21,6 +21,13 @@ class Preview {
      */
     private $filename;
 
+    /**
+     * Full path to the component file.
+     *
+     * @var string
+     */
+    private $filepath;
+
     public function __construct() {
         $styleguide = Styleguide::instance();
 
@@ -44,6 +51,16 @@ class Preview {
         if (!in_array($this->filename, $files)) {
             throw new \DomainException('Invalid parameters.');
         }
+
+        // Generate the full path to the file, and check if it really exists.
+        // That's just a sanity check, we should know from styleguide call
+        // that the file does exists.
+        $styleguide = Styleguide::instance();
+        $this->filepath = $styleguide->getComponentPath($this->path, $this->filename);
+
+        if (!file_exists($this->filepath)) {
+            throw new \Exception('Well, that should not happen.');
+        }
     }
 
     /* Public API */
@@ -52,15 +69,6 @@ class Preview {
      * Print the component.
      */
     public function insert() {
-        $styleguide = Styleguide::instance();
-        $file = $styleguide->getComponentPath($this->path, $this->filename);
-
-        // Sanity check.
-        // We *should* be certain that the file exists after constructor.
-        if (!file_exists($file)) {
-            throw new \Exception('Well, that should not happen.');
-        }
-
-        include $file;
+        include $this->filepath;
     }
 }
