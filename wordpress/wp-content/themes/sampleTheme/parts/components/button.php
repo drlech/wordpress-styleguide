@@ -2,7 +2,7 @@
 /**
  * This is just a comment.
  *
- * @var string $text
+ * @var string $text word
  */
 
 ?>

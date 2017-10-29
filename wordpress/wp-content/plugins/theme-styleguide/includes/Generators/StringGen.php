@@ -87,28 +87,124 @@ class StringGen extends Generator {
     public function generate() {
         $comment = trim($this->comment);
 
-        // Two words 'Lorem ipsum' are a default if no text format
-        // is requested in the comment.
+        // User can specify what is to be generated in the variable comment.
+        // Here we resolve various options.
+
+        // 'Lorem ipsum' (case insensitive).
+        // Generates: the most common/famous "Lorem ipsum dolor sit amet..." sentence.
+        if ('lorem ipsum' === strtolower($comment)) {
+            return self::$base;
+        }
+
+        // A single sentence.
+        // This will always be base "Lorem ipsum dolor sit amet..."
+        if ('sentence' === $comment) {
+            return $this->generateSentences(1);
+        }
+
+        // sentences:number, e.g. sentences:5
+        // Generates: given number of random sentences.
+        if (preg_match('/sentences:(\d+)/', $comment, $matches)) {
+            $numberOfSentences = (int) $matches[1];
+            return $this->generateSentences($numberOfSentences);
+        }
+
+        // A single word.
+        if ('word' === $comment) {
+            return $this->generateWord();
+        }
+
+        // words:number, e.g. words:20
+        // Generates: random sentences with a total number of words
+        // as specified. This will not generate generate a string of non-puncuated
+        // words, but normal sentences. Difference between this and "sentence:x" option
+        // is that in case of "sentence:x" sentences will be completely random
+        // (which means the total length of the text is random), but here we make sure
+        // to generate text of specific length (in words).
+        if (preg_match('/words:(\d+)/', $comment, $matches)) {
+            $numberOfWords = (int) $matches[1];
+            return $this->generateWords($numberOfWords);
+        }
+
+        // If we didn't match a predefined rule, we return just those two words.
         // They are ideal for displaying common things like button texts,
         // labels, input placeholders, etc.
-        if (!$comment) {
-            $comment = 'Lorem ipsum';
+        return 'Lorem ipsum';
+    }
+
+    /**
+     * Generate given number of sentences.
+     *
+     * @param int $number
+     * @return string
+     */
+    private function generateSentences($number) {
+        if (1 === $number) {
+            return self::$base;
         }
 
-        if ('lorem ipsum' === strtolower($comment)) {
-            return 'Lorem ipsum';
+        $sentences = [self::$base];
+        for ($i = 0; $i < $number - 1; $i++) {
+            $sentences[] = $this->generateSentence();
         }
 
-        return $this->generateSentence();
+        return implode(' ', $sentences);
+    }
+
+    /**
+     * Generate a string of random sentences that will have
+     * a total of $number number of words.
+     *
+     * @param int $number
+     * @return string
+     */
+    private function generateWords($number) {
+        // If we request words fewer or equal than the base text then generate
+        // a random sentence. That is to prevent displaying the same thing every time
+        // we want to display a short text.
+        // If the number of words to generate indicates multiple sentences will be
+        // generated then the first sentence will always be "Lorem ipsum".
+        if ($number <= self::$baseLength) {
+            return $this->generateSentence($number);
+        }
+
+        // We are here if requested number of words was higher than the length
+        // of the base sentence. In that case we take the base sentence
+        // as the first one, and add a bunch of random sentences to it.
+        $sentences = [self::$base];
+        $number -= self::$baseLength;
+
+        $maxSentenceLength = 15;
+
+        // Keep generating sentences as long as remaining number of words
+        // is smaller than the largest sentence that can be randomly generated.
+        // That prevents us from overshooting.
+        while ($number > 0 && $number >= $maxSentenceLength) {
+            $newSentence = $this->generateSentence();
+            $sentences[] = $newSentence;
+            $number -= count(explode(' ', $newSentence));
+        }
+
+        // At this point we're missing just a couple of words till the end.
+        // If we generate sentence at random we might overshoot and have longer
+        // text than requested.
+        $sentences[] = $this->generateSentence($number);
+
+        return implode(' ', $sentences);
     }
 
     /**
      * Generate a random sentence.
      *
+     * @param int $length Length of the sentence; will be random if not provided.
      * @return string
      */
-    private function generateSentence() {
-        $sentenceLength = mt_rand(5, 15);
+    private function generateSentence($length = null) {
+        $sentenceLength = $length;
+        if (!$length) {
+            $sentenceLength = mt_rand(5, 15);
+        }
+
         $words = array_rand(self::$vocabulary, $sentenceLength);
         $words = array_map(function($item) {
             return self::$vocabulary[$item];
@@ -138,5 +234,18 @@ class StringGen extends Generator {
         }
 
         return implode(' ', $words);
+    }
+
+    /**
+     * Generate a single random word.
+     *
+     * @return string
+     */
+    private function generateWord() {
+        $index = array_rand(self::$vocabulary);
+        $word = self::$vocabulary[$index];
+
+        // Capitalize it
+        return ucfirst($word);
     }
 }

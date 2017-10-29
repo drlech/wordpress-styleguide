@@ -1,6 +1,6 @@
 <?php
 /**
- * @var string $text different
+ * @var string $text sentences:10
  */
 ?>
 
