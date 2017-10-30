@@ -16,19 +16,31 @@ $styleguide = Styleguide::instance();
     <?php View::show('preview/head-scripts'); ?>
 
     <style type="text/css">
-        .theme-styleguide-preview-variation-title {
-            margin-top: 35px !important;
+    .theme-styleguide-preview-component-wrapper {
+        position: relative !important;
+    }
 
-            font-family: monospace !important;
-            font-size: 14px !important;
-            line-height: 16px !important;
-            text-transform: none !important;
-            font-weight: 400 !important;
-        }
+    .theme-styleguide-preview-variation-title {
+        padding: 2px 4px !important;
 
-        .theme-styleguide-preview-variation-title:first-child {
-            margin-top: 0 !important;
-        }
+        position: absolute !important;
+        right: 0 !important;
+        top: 0 !important;
+
+        font-family: monospace !important;
+        font-size: 12px !important;
+        line-height: 15px !important;
+        color: white !important;
+        text-transform: none !important;
+        font-weight: 400 !important;
+
+        background-color: royalblue !important;
+        border-radius: 3px !important;
+    }
+
+    .theme-styleguide-preview-variation-title:first-child {
+        margin-top: 0 !important;
+    }
     </style>
 </head>
 

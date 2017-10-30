@@ -87,13 +87,14 @@ class Preview {
                 extract($variation['values']);
             }
 
-            if (isset($variation['description'])) {
-                View::show('preview/variation-title', [
-                    'title' => $variation['description']
-                ]);
-            }
-
+            ob_start();
             include $this->filepath;
+            $component = ob_get_clean();
+
+            View::show('preview/component', [
+                'description' => isset($variation['description']) ? $variation['description'] : false,
+                'component' => $component
+            ]);
         }
     }
 
