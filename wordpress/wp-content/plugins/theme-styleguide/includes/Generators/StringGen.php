@@ -85,32 +85,30 @@ class StringGen extends Generator {
      * @inheritdoc
      */
     public function generate() {
-        $comment = trim($this->comment);
-
         // User can specify what is to be generated in the variable comment.
         // Here we resolve various options.
 
         // 'Lorem ipsum' (case insensitive).
         // Generates: the most common/famous "Lorem ipsum dolor sit amet..." sentence.
-        if ('lorem ipsum' === strtolower($comment)) {
+        if ('lorem ipsum' === strtolower($this->comment)) {
             return self::$base;
         }
 
         // A single sentence.
         // This will always be base "Lorem ipsum dolor sit amet..."
-        if ('sentence' === $comment) {
+        if ('sentence' === $this->comment) {
             return $this->generateSentences(1);
         }
 
         // sentences:number, e.g. sentences:5
         // Generates: given number of random sentences.
-        if (preg_match('/sentences:(\d+)/', $comment, $matches)) {
+        if (preg_match('/sentences:(\d+)/', $this->comment, $matches)) {
             $numberOfSentences = (int) $matches[1];
             return $this->generateSentences($numberOfSentences);
         }
 
         // A single word.
-        if ('word' === $comment) {
+        if ('word' === $this->comment) {
             return $this->generateWord();
         }
 
@@ -121,7 +119,7 @@ class StringGen extends Generator {
         // is that in case of "sentence:x" sentences will be completely random
         // (which means the total length of the text is random), but here we make sure
         // to generate text of specific length (in words).
-        if (preg_match('/words:(\d+)/', $comment, $matches)) {
+        if (preg_match('/words:(\d+)/', $this->comment, $matches)) {
             $numberOfWords = (int) $matches[1];
             return $this->generateWords($numberOfWords);
         }

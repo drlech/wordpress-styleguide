@@ -15,7 +15,7 @@ abstract class Generator {
     protected $comment;
 
     public function __construct($comment = false) {
-        $this->comment = $comment;
+        $this->comment = trim($comment);
     }
 
     /**
@@ -30,7 +30,9 @@ abstract class Generator {
      */
     public static function getGenerators() {
         return [
-            string => StringGen::class
+            'string'  => StringGen::class,
+            'int'     => Number::class,
+            'integer' => Number::class
         ];
     }
 }

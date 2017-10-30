@@ -1,7 +1,7 @@
 <?php
 /**
  * @var bool   $withBorder
- * @var int    $width
+ * @var int    $width      300-500
  * @var string $text       sentences:5
  */
 
