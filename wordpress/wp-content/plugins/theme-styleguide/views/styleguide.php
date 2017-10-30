@@ -37,7 +37,7 @@ namespace ThemeStyleguide;
             View::show('menu-item', [
                 'item' => [
                     'name' => __('Typography', 'wordpress-styleguide'),
-                    'link' => 'http://localhost/wordpress-styleguide/wordpress/theme-styleguide/?page=typography',
+                    'link' => $styleguide->getLinkForPredefinedPage('typography'),
                     'isActive' => $styleguide->isPredefinedPageActive('typography')
                 ]
             ]);

@@ -125,6 +125,24 @@ class Styleguide {
     }
 
     /**
+     * Retrieve the link for one of the predefined pages,
+     * if the page exists.
+     *
+     * @param string $page
+     * @return string|bool
+     */
+    public function getLinkForPredefinedPage($page) {
+        // If the page doesn't exist just display root components.
+        // That's not ideal, but I have no good idea what to do with it
+        // at the moment.
+        if (!isset(self::$predefinedPages[$page])) {
+            return $this->getLinkFor('root');
+        }
+
+        return add_query_arg('page', $page, $this->getBaseUrl());
+    }
+
+    /**
      * Check if we are currently displaying styleguide
      * for the given path.
      *
