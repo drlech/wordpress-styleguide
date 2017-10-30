@@ -69,13 +69,26 @@ class Preview {
      * Print the component.
      */
     public function insert() {
-        $values = $this->generateVariableValues();
+        $variations = $this->generateVariableValues();
 
-        if ($values) {
-            extract($values);
+        // There are no variables, and thus no variations.
+        // We can insert the component preview once, as it can (most likely)
+        // be displayed without relaying on any additional data.
+        if (!$variations) {
+            include $this->filepath;
+
+            return;
         }
 
-        include $this->filepath;
+        // Otherwise display a component preview once for each variation,
+        // each having its own set of variables.
+        foreach ($variations as $variation) {
+            if (isset($variation['values'])) {
+                extract($variation['values']);
+            }
+
+            include $this->filepath;
+        }
     }
 
     /* Private API */
@@ -98,21 +111,32 @@ class Preview {
             return false;
         }
 
+        // If the component has few different variations (or types, or whatever),
+        // then we want to showcase all of them.
+        $variations = $this->generateVariations($vars);
+
         // At this point the file doc exists and contains variables
         // and we have extracted them. We can start generating sample values.
         $generators = Generators\Generator::getGenerators();
         $generatedValues = [];
 
-        foreach ($vars as $var) {
-            // Either variable has no type (which should not be possible, as we validate
-            // it earlier), or we don't have generator for given variable type.
-            // In that case - skip that variable and hope nothing breaks.
-            if (!isset($var['type']) || !isset($generators[$var['type']])) {
-                continue;
+        foreach ($variations as $variation) {
+            $vars = $variation['vars'];
+
+            $variationValues = [];
+            foreach ($vars as $var) {
+                // Either variable has no type (which should not be possible, as we validate
+                // it earlier), or we don't have generator for given variable type.
+                // In that case - skip that variable and hope nothing breaks.
+                if (!isset($var['type']) || !isset($generators[$var['type']])) {
+                    continue;
+                }
+
+                $generator = new $generators[$var['type']]($var['comment']);
+                $variationValues[$var['name']] = $generator->generate();
             }
 
-            $generator = new $generators[$var['type']]($var['comment']);
-            $generatedValues[$var['name']] = $generator->generate();
+            $generatedValues[] = ['values' => $variationValues];
         }
 
         return $generatedValues;
@@ -170,5 +194,57 @@ class Preview {
         }
 
         return $variables;
+    }
+
+    /**
+     * If component variable is a bool with "variation" specified as option in the comment
+     * we want to display the component multiple times, one for each value to showcase
+     * all possible states component can take.
+     *
+     * This function will check if there are any variations specified and return array
+     * of arrays of variables, but with a variation variable set to a fixed value
+     * for each variation.
+     *
+     * @param array $vars
+     * @return array
+     */
+    private function generateVariations($vars) {
+        $variations = [];
+
+        for ($i = 0; $i < count($vars); $i++) {
+            $var = $vars[$i];
+
+            if ($var['type'] !== 'bool' && $var['type'] !== 'boolean') {
+                continue;
+            }
+
+            if (trim($var['comment']) !== 'variations') {
+                continue;
+            }
+
+            // Create variations for both boolean values.
+            // We set the values in strings because all that is generated here
+            // will be passed to generators, which read variable comments
+            // as strings.
+            $newVariationTrue = $vars;
+            $newVariationTrue[$i]['comment'] = 'true';
+
+            $newVariationFalse = $vars;
+            $newVariationFalse[$i]['comment'] = 'false';
+
+            $variations[] = ['vars' => $newVariationTrue];
+            $variations[] = ['vars' => $newVariationFalse];
+        }
+
+        // There might be no boolean variables and thus no variations created.
+        // In that case we want to return the original set of variables.
+        // We return it in the array for consistency - that's how variations
+        // are returend and array of array of variables is what the calling
+        // function will expect.
+        if (!$variations) {
+            return ['vars' => $vars];
+        }
+
+        return $variations;
     }
 }

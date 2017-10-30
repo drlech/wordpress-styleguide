@@ -1,6 +1,6 @@
 <?php
 /**
- * @var bool   $withBorder
+ * @var bool   $withBorder variations
  * @var int    $width      300-500
  * @var string $text       sentences:5
  */
