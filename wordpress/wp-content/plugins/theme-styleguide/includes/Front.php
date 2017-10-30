@@ -59,7 +59,7 @@ class Front {
             }
 
             $preview = new Preview();
-            View::show('preview', [
+            View::show('preview/preview', [
                 'preview' => $preview
             ]);
             exit();

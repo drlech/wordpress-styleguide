@@ -88,7 +88,7 @@ class Preview {
             }
 
             if (isset($variation['description'])) {
-                View::show('preview-variation-title', [
+                View::show('preview/variation-title', [
                     'title' => $variation['description']
                 ]);
             }
