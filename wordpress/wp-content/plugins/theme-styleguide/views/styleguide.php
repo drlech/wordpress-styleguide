@@ -33,12 +33,22 @@ namespace ThemeStyleguide;
         <aside>
             <?php
 
+            // Display menu items for the predefined pages.
+            View::show('menu-item', [
+                'item' => [
+                    'name' => __('Typography', 'wordpress-styleguide'),
+                    'link' => 'http://localhost/wordpress-styleguide/wordpress/theme-styleguide/?page=typography',
+                    'isActive' => $styleguide->isPredefinedPageActive('typography')
+                ]
+            ]);
+
+            echo '<hr>';
+
             // Display menu item corresponding to the root of the
             // folder containing the components
             View::show('menu-item', [
                 'item' => [
                     'name' => 'root',
-                    'path' => 'root',
                     'link' => $styleguide->getLinkFor('root'),
                     'isActive' => $styleguide->isMenuItemActive('root'),
                     'isActiveParent' => false

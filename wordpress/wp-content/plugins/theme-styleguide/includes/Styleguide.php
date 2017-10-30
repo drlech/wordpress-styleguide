@@ -22,6 +22,16 @@ class Styleguide {
     private static $componentsLocation = 'parts/components';
 
     /**
+     * Maps predefined pages slugs to the names of the views
+     * that display them.
+     *
+     * @var string
+     */
+    private static $predefinedPages = [
+        'typography' => 'typography'
+    ];
+
+    /**
      * A list of all states the styleguide can take.
      *
      * @var array
@@ -81,13 +91,8 @@ class Styleguide {
      * @return string|bool
      */
     public function getPredefinedPage($page) {
-        // Maps $page parameter to view names.
-        $pages = [
-            'typography' => 'typography'
-        ];
-
-        if (isset($pages[$page])) {
-            return $pages[$page];
+        if (isset(self::$predefinedPages[$page])) {
+            return self::$predefinedPages[$page];
         }
 
         return false;
@@ -127,6 +132,11 @@ class Styleguide {
      * @return bool
      */
     public function isMenuItemActive($path) {
+        // Predefined pages have priority.
+        if (isset($_GET['page'])) {
+            return false;
+        }
+
         $currentPath = false;
         if (isset($_GET['path'])) {
             $currentPath = $_GET['path'];
@@ -151,6 +161,11 @@ class Styleguide {
      * @return bool
      */
     public function isMenuItemActiveParent($path) {
+        // Predefined pages have priority.
+        if (isset($_GET['page'])) {
+            return false;
+        }
+
         $currentPath = false;
         if (isset($_GET['path'])) {
             $currentPath = $_GET['path'];
@@ -165,6 +180,26 @@ class Styleguide {
         }
 
         return $currentPath !== $path && strpos($currentPath, $path) === 0;
+    }
+
+    /**
+     * Check if we are currently displaying given predefined
+     * preview page.
+     *
+     * @param string $page
+     * @return string
+     */
+    public function isPredefinedPageActive($page) {
+        // First check if that page even exists
+        if (!isset(self::$predefinedPages[$page])) {
+            return false;
+        }
+
+        if (!isset($_GET['page'])) {
+            return false;
+        }
+
+        return $_GET['page'] === $page;
     }
 
     /**
@@ -241,7 +276,6 @@ class Styleguide {
             $path = preg_replace('/^\//', '', "$currentPath/$name");
             $item = [
                 'name' => $name,
-                'path' => $path,
                 'link' => $this->getLinkFor($path),
                 'isActive' => $this->isMenuItemActive($path),
                 'isActiveParent' => $this->isMenuItemActiveParent($path)
