@@ -13,13 +13,7 @@ namespace ThemeStyleguide;
 <head>
     <title>Component Preview</title>
 
-    <?php
-
-    wp_print_styles();
-    wp_print_head_scripts();
-    wp_enqueue_scripts();
-
-    ?>
+    <?php View::show('preview/head-scripts'); ?>
 
     <style type="text/css">
         .theme-styleguide-preview-variation-title {
@@ -43,6 +37,6 @@ namespace ThemeStyleguide;
         <?php $preview->insert(); ?>
     </div>
 
-    <?php wp_print_footer_scripts(); ?>
+    <?php View::show('preview/footer-scripts'); ?>
 </body>
 </html>
