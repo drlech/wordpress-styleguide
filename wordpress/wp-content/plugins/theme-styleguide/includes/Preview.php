@@ -258,7 +258,7 @@ class Preview {
         // are returend and array of array of variables is what the calling
         // function will expect.
         if (!$variations) {
-            return ['vars' => $vars];
+            return [['vars' => $vars]];
         }
 
         return $variations;
