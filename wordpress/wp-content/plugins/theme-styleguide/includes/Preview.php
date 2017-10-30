@@ -87,6 +87,12 @@ class Preview {
                 extract($variation['values']);
             }
 
+            if (isset($variation['description'])) {
+                View::show('preview-variation-title', [
+                    'title' => $variation['description']
+                ]);
+            }
+
             include $this->filepath;
         }
     }
@@ -136,7 +142,10 @@ class Preview {
                 $variationValues[$var['name']] = $generator->generate();
             }
 
-            $generatedValues[] = ['values' => $variationValues];
+            $generatedValues[] = [
+                'values' => $variationValues,
+                'description' => $variation['description']
+            ];
         }
 
         return $generatedValues;
@@ -232,8 +241,15 @@ class Preview {
             $newVariationFalse = $vars;
             $newVariationFalse[$i]['comment'] = 'false';
 
-            $variations[] = ['vars' => $newVariationTrue];
-            $variations[] = ['vars' => $newVariationFalse];
+            $variations[] = [
+                'vars' => $newVariationTrue,
+                'description' => '$' . $var['name'] . ' = true'
+            ];
+
+            $variations[] = [
+                'vars' => $newVariationFalse,
+                'description' => '$' . $var['name'] . ' = false'
+            ];
         }
 
         // There might be no boolean variables and thus no variations created.
