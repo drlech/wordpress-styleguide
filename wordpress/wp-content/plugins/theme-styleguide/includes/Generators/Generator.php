@@ -32,7 +32,9 @@ abstract class Generator {
         return [
             'string'  => StringGen::class,
             'int'     => Number::class,
-            'integer' => Number::class
+            'integer' => Number::class,
+            'bool'    => Boolean::class,
+            'boolean' => Boolean::class
         ];
     }
 }
