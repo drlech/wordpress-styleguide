@@ -10,8 +10,12 @@ namespace ThemeStyleguide;
 $styleguide = Styleguide::instance();
 $menuItem = new \HTMLTag('div', 'menu-item');
 
-if ($styleguide->isPathActive($item['path'])) {
+if ($styleguide->isMenuItemActive($item['path'])) {
     $menuItem->addClass('active');
+}
+
+if ($styleguide->isMenuItemActiveParent($item['path'])) {
+    $menuItem->addClass('active-parent');
 }
 
 $menuItem->open();

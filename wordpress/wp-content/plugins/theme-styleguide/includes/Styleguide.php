@@ -102,8 +102,9 @@ class Styleguide {
      * for the given path.
      *
      * @param string $path
+     * @return bool
      */
-    public function isPathActive($path) {
+    public function isMenuItemActive($path) {
         $currentPath = false;
         if (isset($_GET['path'])) {
             $currentPath = $_GET['path'];
@@ -117,7 +118,31 @@ class Styleguide {
             return false;
         }
 
-        return strpos($currentPath, $path) === 0;
+        return $path === $currentPath;
+    }
+
+    /**
+     * Check if menu item representing given path
+     * is a parent of the active item.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function isMenuItemActiveParent($path) {
+        $currentPath = false;
+        if (isset($_GET['path'])) {
+            $currentPath = $_GET['path'];
+        }
+
+        if (!$currentPath && 'root' === $path) {
+            return true;
+        }
+
+        if (!$currentPath) {
+            return false;
+        }
+
+        return $currentPath !== $path && strpos($currentPath, $path) === 0;
     }
 
     /**

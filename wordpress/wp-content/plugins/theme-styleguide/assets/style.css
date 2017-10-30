@@ -103,7 +103,8 @@ main aside {
     padding-left: 10px;
 }
 
-.menu-item.active .subitems {
+.menu-item.active .subitems,
+.menu-item.active-parent .subitems {
     display: block;
 }
 
