@@ -93,6 +93,10 @@ main aside {
     background-color: rgba(var(--highlightRgb), .3);
 }
 
+.menu-item.active > .box {
+    background-color: rgba(var(--highlightRgb), .5);
+}
+
 .menu-item .subitems {
     display: none;
 
