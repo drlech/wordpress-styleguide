@@ -38,7 +38,10 @@ namespace ThemeStyleguide;
             View::show('menu-item', [
                 'item' => [
                     'name' => 'root',
-                    'path' => 'root'
+                    'path' => 'root',
+                    'link' => $styleguide->getLinkFor('root'),
+                    'isActive' => $styleguide->isMenuItemActive('root'),
+                    'isActiveParent' => false
                 ]
             ]);
 

@@ -10,11 +10,12 @@ namespace ThemeStyleguide;
 $styleguide = Styleguide::instance();
 $menuItem = new \HTMLTag('div', 'menu-item');
 
-if ($styleguide->isMenuItemActive($item['path'])) {
+// Process the classes for the menu item based on passed settings
+if (isset($item['isActive']) && true === $item['isActive']) {
     $menuItem->addClass('active');
 }
 
-if ($styleguide->isMenuItemActiveParent($item['path'])) {
+if (isset($item['isActiveParent']) && true === $item['isActiveParent']) {
     $menuItem->addClass('active-parent');
 }
 
@@ -22,7 +23,7 @@ $menuItem->open();
 
 ?>
 
-<a href="<?php echo $styleguide->getLinkFor($item['path']); ?>" class="box"><?php echo $item['name']; ?></a>
+<a href="<?php echo $item['link']; ?>" class="box"><?php echo $item['name']; ?></a>
 
 <?php if (isset($item['subitems'])): ?>
     <div class="subitems">

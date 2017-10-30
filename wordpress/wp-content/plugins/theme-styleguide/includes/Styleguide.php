@@ -241,7 +241,10 @@ class Styleguide {
             $path = preg_replace('/^\//', '', "$currentPath/$name");
             $item = [
                 'name' => $name,
-                'path' => $path
+                'path' => $path,
+                'link' => $this->getLinkFor($path),
+                'isActive' => $this->isMenuItemActive($path),
+                'isActiveParent' => $this->isMenuItemActiveParent($path)
             ];
 
             $subitems = $this->getFoldersFromFiles($folders[$name], $name, $path);
