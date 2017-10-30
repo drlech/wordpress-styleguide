@@ -72,6 +72,28 @@ class Styleguide {
     /* Public API */
 
     /**
+     * Check if there is a predefined preview page with a given name.
+     *
+     * Returns the name of the view file to render if the preview exists,
+     * false otherwise.
+     *
+     * @var string $page
+     * @return string|bool
+     */
+    public function getPredefinedPage($page) {
+        // Maps $page parameter to view names.
+        $pages = [
+            'typography' => 'typography'
+        ];
+
+        if (isset($pages[$page])) {
+            return $pages[$page];
+        }
+
+        return false;
+    }
+
+    /**
      * Convert $this->files to an array that can be passed
      * to the view.
      */

@@ -1,11 +1,11 @@
 <?php
 /**
  * Preview of a single component.
- *
- * @var Preview $preview
  */
 
 namespace ThemeStyleguide;
+
+$styleguide = Styleguide::instance();
 
 ?>
 
@@ -34,7 +34,26 @@ namespace ThemeStyleguide;
 
 <body>
     <div>
-        <?php $preview->insert(); ?>
+        <?php
+
+        if (isset($_GET['page'])) {
+            $predefinedPreview = $styleguide->getPredefinedPage($_GET['page']);
+
+            if ($predefinedPreview) {
+                View::show("preview/predefined/$predefinedPreview");
+            } else {
+                ?>
+
+                <p><?php _e('There\'s nothing here. Move along.', 'wordpress-styleguide'); ?></p>
+
+                <?php
+            }
+        } else {
+            $preview = new Preview();
+            $preview->insert();
+        }
+
+        ?>
     </div>
 
     <?php View::show('preview/footer-scripts'); ?>

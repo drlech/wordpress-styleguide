@@ -54,23 +54,41 @@ namespace ThemeStyleguide;
         <section class="components">
             <?php
 
-            $path = 'root';
-            if (isset($_GET['path'])) {
-                $path = $_GET['path'];
+            // Display predefined page
+            if (isset($_GET['page'])) {
+                $predefinedPage = $styleguide->getPredefinedPage($_GET['page']);
+
+                if ($predefinedPage) {
+                    View::show('previews', ['page' => $predefinedPage]);
+                } else {
+                    ?>
+
+                    <p><?php _e('There\'s nothing here. Move along.', 'wordpress-styleguide'); ?></p>
+
+                    <?php
+                }
             }
 
-            $files = $styleguide->getFiles($path);
-            if (!$files) {
-                ?>
+            // Display previews of components
+            else {
+                $path = 'root';
+                if (isset($_GET['path'])) {
+                    $path = $_GET['path'];
+                }
 
-                <p><?php _e('There\'s nothing here. Move along.', 'wordpress-styleguide'); ?></p>
+                $files = $styleguide->getFiles($path);
+                if ($files) {
+                     View::show('previews', [
+                        'path' => $path,
+                        'files' => $files
+                    ]);
+                } else {
+                    ?>
 
-                <?php
-            } else {
-                View::show('previews', [
-                    'path' => $path,
-                    'files' => $files
-                ]);
+                    <p><?php _e('There\'s nothing here. Move along.', 'wordpress-styleguide'); ?></p>
+
+                    <?php
+                }
             }
 
             ?>
