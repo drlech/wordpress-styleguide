@@ -36,7 +36,7 @@ class Styleguide {
      *
      * @var array
      */
-    private static $states = [
+    public static $states = [
         'PENDING' => 1,
         'OK' => 2,
         'MISSING' => 3
@@ -59,7 +59,7 @@ class Styleguide {
     private function __construct() {
         $this->setState('PENDING');
 
-        if (!$this->getComponent()) {
+        if (!file_exists($this->getComponent())) {
             $this->setState('MISSING');
 
             return;
@@ -80,6 +80,23 @@ class Styleguide {
     }
 
     /* Public API */
+
+    /**
+     * Check if the styleguide is in a given state.
+     *
+     * State must come from self::$states.
+     *
+     * @param string $state
+     * @return bool
+     */
+    public function is($state) {
+        // Styleguide cannot be in a state that doesn't exist. Duh.
+        if (!isset(self::$states[$state])) {
+            return false;
+        }
+
+        return $this->state === self::$states[$state];
+    }
 
     /**
      * Check if there is a predefined preview page with a given name.

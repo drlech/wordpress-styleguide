@@ -33,9 +33,15 @@ class Front {
             }
 
             $styleguide = Styleguide::instance();
-            View::show('styleguide', [
-                'styleguide' => $styleguide
-            ]);
+
+            if ($styleguide->is('MISSING')) {
+                View::show('styleguide-missing');
+            } else {
+                View::show('styleguide', [
+                    'styleguide' => $styleguide
+                ]);
+            }
+
             exit();
         });
     }
