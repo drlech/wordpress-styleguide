@@ -61,7 +61,7 @@ $styleguide = Styleguide::instance();
                 <?php
             }
         } else {
-            $preview = new Preview();
+            $preview = new Preview($_GET['path'], $_GET['file']);
             $preview->insert();
         }
 

@@ -28,20 +28,25 @@ class Preview {
      */
     private $filepath;
 
-    public function __construct() {
+    /**
+     * @var string $path Path to the file, relative to the components folder.
+     * @var string $file Name of the file to display.
+     */
+    public function __construct($path = false, $file = false) {
         $styleguide = Styleguide::instance();
 
         // Because the previews are typically displayed in an iframe
-        // the parameters are passed via $_GET.
-        // Let's check if the parameters are set.
-        if (!isset($_GET['path']) || !isset($_GET['file'])) {
+        // the parameters will be passed via $_GET.
+        // Because users can pass whatver they want, let's make sure
+        // the file exists.
+        if (!$path || !$file) {
             throw new \DomainException('Parameters "path" and "file" required.');
         }
 
         // Check if the parameters are legit - correspond to the
         // actually existing file.
-        $this->path = $_GET['path'];
-        $this->filename = $_GET['file'];
+        $this->path = $path;
+        $this->filename = $file;
 
         $files = $styleguide->getFiles($this->path);
         if (!$files) {
