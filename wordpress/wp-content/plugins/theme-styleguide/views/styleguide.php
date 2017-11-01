@@ -33,14 +33,21 @@ namespace ThemeStyleguide;
         <aside>
             <?php
 
+            $predefinedPages = [
+                'typography' => __('Typography', 'wordpress-styleguide'),
+                'showcase' => __('Showcase', 'wordpress-styleguide')
+            ];
+
             // Display menu items for the predefined pages.
-            View::show('menu-item', [
-                'item' => [
-                    'name' => __('Typography', 'wordpress-styleguide'),
-                    'link' => $styleguide->getLinkForPredefinedPage('typography'),
-                    'isActive' => $styleguide->isPredefinedPageActive('typography')
-                ]
-            ]);
+            foreach ($predefinedPages as $slug => $title) {
+                View::show('menu-item', [
+                    'item' => [
+                        'name' => $title,
+                        'link' => $styleguide->getLinkForPredefinedPage($slug),
+                        'isActive' => $styleguide->isPredefinedPageActive($slug)
+                    ]
+                ]);
+            }
 
             echo '<hr>';
 

@@ -28,7 +28,8 @@ class Styleguide {
      * @var string
      */
     private static $predefinedPages = [
-        'typography' => 'typography'
+        'typography' => 'typography',
+        'showcase' => 'showcase'
     ];
 
     /**
@@ -124,8 +125,22 @@ class Styleguide {
     }
 
     /**
+     * Retrieve one-dimensional array of all paths within the components folder.
+     *
+     * This array will contain all possible paths to all subfolders.
+     *
+     * @return array
+     */
+    public function getAllPaths() {
+        $paths = ['root'];
+
+        return array_merge($paths, $this->getPathsFrom('', $this->files));
+    }
+
+    /**
      * Retrieve a link to the styleguide displaying a folder
      * specified by path.
+     *
      * This function checks if the specified folder exists
      * in the files array and is recognized by the styleguide.
      *
@@ -325,6 +340,35 @@ class Styleguide {
         }
 
         return $result;
+    }
+
+    /**
+     * Retrieve all possible paths to all subfolders within given folder.
+     *
+     * @param string $current Current path (appended to beginning).
+     * @param array $where Nested array to go through.
+     * @return array
+     */
+    private function getPathsFrom($current, $where) {
+        $paths = [];
+        if ($current) {
+            $paths = [$current];
+        }
+
+        foreach ($where as $name => $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $subpath = $name;
+            if ($current) {
+                $subpath = "$current/$name";
+            }
+
+            $paths = array_merge($paths, $this->getPathsFrom($subpath, $item));
+        }
+
+        return $paths;
     }
 
     /**
