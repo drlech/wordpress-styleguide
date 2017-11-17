@@ -50,9 +50,10 @@ $styleguide = Styleguide::instance();
 
         if (isset($_GET['page'])) {
             $predefinedPreview = $styleguide->getPredefinedPage($_GET['page']);
+            $previewName = $predefinedPreview['name'];
 
             if ($predefinedPreview) {
-                View::show("preview/predefined/$predefinedPreview");
+                View::show("preview/predefined/$previewName");
             } else {
                 ?>
 

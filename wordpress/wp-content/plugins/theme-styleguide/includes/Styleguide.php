@@ -28,8 +28,14 @@ class Styleguide {
      * @var string
      */
     private static $predefinedPages = [
-        'typography' => 'typography',
-        'showcase' => 'showcase'
+        'typography' => [
+            'name' => 'typography',
+            'iframe' => true
+        ],
+        'showcase' => [
+            'name' => 'showcase',
+            'iframe' => false
+        ]
     ];
 
     /**
