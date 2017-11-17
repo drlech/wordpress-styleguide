@@ -42,6 +42,22 @@ $styleguide = Styleguide::instance();
         margin-top: 0 !important;
     }
     </style>
+
+    <script type="text/javascript">
+        // Block links in components
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+            if (!links.length) {
+                return;
+            }
+
+            for (let i = 0; i < links.length; i++) {
+                const link = links[i];
+                console.log(link);
+                link.addEventListener('click', e => e.preventDefault());
+            }
+        });
+    </script>
 </head>
 
 <body>
