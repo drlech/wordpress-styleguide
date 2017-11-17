@@ -10,15 +10,15 @@ class Boolean extends Generator {
      * @inheritdoc
      */
     public function generate() {
-        if ('true' === $this->comment) {
+        if ('true' === $this->params) {
             return true;
         }
 
-        if ('false' === $this->comment) {
+        if ('false' === $this->params) {
             return false;
         }
 
-        if ('random' === $this->comment) {
+        if ('random' === $this->params) {
             return (bool) mt_rand(0, 1);
         }
 

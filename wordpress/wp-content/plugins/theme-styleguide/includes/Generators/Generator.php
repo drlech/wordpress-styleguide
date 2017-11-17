@@ -12,10 +12,10 @@ abstract class Generator {
      *
      * @var string
      */
-    protected $comment;
+    protected $params;
 
-    public function __construct($comment = false) {
-        $this->comment = trim($comment);
+    public function __construct($params = false) {
+        $this->params = trim($params);
     }
 
     /**
@@ -34,7 +34,23 @@ abstract class Generator {
             'int'     => Number::class,
             'integer' => Number::class,
             'bool'    => Boolean::class,
-            'boolean' => Boolean::class
+            'boolean' => Boolean::class,
+            'array'   => ArrayGen::class
         ];
+    }
+
+    /**
+     * @param string $type
+     * @param string $params
+     * @return mixed
+     */
+    public static function generateValue($type, $params) {
+        $generators = self::getGenerators();
+        if (!isset($generators[$type])) {
+            return null;
+        }
+
+        $generator = new $generators[$type]($params);
+        return $generator->generate();
     }
 }

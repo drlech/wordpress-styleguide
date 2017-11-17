@@ -12,7 +12,7 @@ class Number extends Generator {
     public function generate() {
         // Number range.
         // Choose the number randomly in that case.
-        if (preg_match('/(\d+)-(\d+)/', $this->comment, $matches)) {
+        if (preg_match('/(\d+)-(\d+)/', $this->params, $matches)) {
             $one = (int) $matches[1];
             $two = (int) $matches[2];
             $min = min($one, $two);
@@ -22,7 +22,7 @@ class Number extends Generator {
         }
 
         // Specific number given.
-        if (preg_match('/\d+/', $this->comment, $matches)) {
+        if (preg_match('/\d+/', $this->params, $matches)) {
             return (int) $matches[0];
         }
 

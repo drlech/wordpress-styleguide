@@ -1,7 +1,7 @@
 <?php
 /**
  * @var string $title words:3
- * @var array  $items
+ * @var array  $items size:5 types(string sentences:2)
  */
 
 ?>
