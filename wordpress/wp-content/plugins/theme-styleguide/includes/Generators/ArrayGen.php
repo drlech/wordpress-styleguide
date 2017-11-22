@@ -29,6 +29,13 @@ class ArrayGen extends Generator {
         return $this->generateAssociativeArray();
     }
 
+    /**
+     * Generate value for non-associative array.
+     *
+     * All elements of the array will have the same variable type.
+     *
+     * @return array
+     */
     private function generateNormalArray() {
         $params = $this->params;
 
@@ -42,14 +49,14 @@ class ArrayGen extends Generator {
             $size = (int) $matches[1];
         }
 
-        // types(...)
+        // [types]
         // Specifies what types of variables will be placed in the array.
         // Types have the following format:
-        // type params, type params
+        // type params
         //
         // Example:
-        // types(string words:5, number 3-5)
-        $hasTypes = preg_match('/types\((.+)\s+(.+)\)/', $params, $matches);
+        // [string words:5]
+        $hasTypes = preg_match('/\[(.+)\s+(.+)\]/', $params, $matches);
         if (!$hasTypes) {
             return [];
         }
