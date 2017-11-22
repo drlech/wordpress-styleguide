@@ -1,7 +1,9 @@
 <?php
 /**
- * @var array $data assoc [text => string words:3, decorators => number 3-7]
+ * @var array $data assoc [text => string words:3, decorators => int 3-7]
  */
+
+$decorators = $data['decorators'];
 
 ?>
 
@@ -9,9 +11,9 @@
     <div class="text"><?php echo $data['text']; ?></div>
 
     <div class="decorators">
-        <?php foreach ($data['decorators'] as $decorator): ?>$_COOKIE
+        <?php for ($i = 0; $i < $decorators; $i++): ?>
             <div class="decorator"></div>
-        <?php endforeach; ?>
+        <?php endfor; ?>
     </div>
 </div>
 

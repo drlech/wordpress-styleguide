@@ -115,6 +115,8 @@ blockquote::before{
 }
 
 .subfolder-component .decorators {
+    margin-top: 5px;
+
     overflow: hidden;
 }
 

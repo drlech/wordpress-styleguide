@@ -69,7 +69,43 @@ class ArrayGen extends Generator {
         return $values;
     }
 
+    /**
+     * Generate random associative array.
+     *
+     * This will be called if "assoc" parameter is present.
+     *
+     * @return array
+     */
     private function generateAssociativeArray() {
+        // [types]
+        // The list of types for the array to generate. Format:
+        // index => type params, index => type params
+        //
+        // Example:
+        // [text => string words:3, stars => number 3]
+        $hasTypes = preg_match('/\[(.+)\]/', $this->params, $matches);
+        if (!$hasTypes) {
+            return [];
+        }
 
+        $value = [];
+
+        // Array fields are comma separated
+        $fields = preg_split('/,\s+/', $matches[1]);
+        foreach ($fields as $field) {
+            $inCorrectFormat = preg_match('/(.+)\s+=>\s+(.+)\s+(.+)/', $field, $matches);
+            if (!$inCorrectFormat) {
+                continue;
+            }
+
+            // Extract variables from matches to make it clear what's what
+            $index = $matches[1];
+            $type = $matches[2];
+            $params = $matches[3];
+
+            $value[$index] = Generator::generateValue($type, $params);
+        }
+
+        return $value;
     }
 }
