@@ -53,7 +53,6 @@ $styleguide = Styleguide::instance();
 
             for (let i = 0; i < links.length; i++) {
                 const link = links[i];
-                console.log(link);
                 link.addEventListener('click', e => e.preventDefault());
             }
         });
