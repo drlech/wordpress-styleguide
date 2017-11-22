@@ -121,6 +121,12 @@ class StringGen extends Generator {
             return $this->generateWords($numberOfWords);
         }
 
+        // url
+        // Generates a sample URL.
+        if ('url' === $this->params) {
+            return $this->generateUrl();
+        }
+
         // If we didn't match a predefined rule, we return just those two words.
         // They are ideal for displaying common things like button texts,
         // labels, input placeholders, etc.
@@ -242,5 +248,46 @@ class StringGen extends Generator {
 
         // Capitalize it
         return ucfirst($word);
+    }
+
+    /**
+     * Generate a random URL.
+     *
+     * @return string
+     */
+    private function generateUrl() {
+        // URL will be a random word from the dictionary, with a 50% chance
+        // of two words.
+        $words = [self::$vocabulary[array_rand(self::$vocabulary)]];
+        if (mt_rand(0, 100) > 50) {
+            $words[] = self::$vocabulary[array_rand(self::$vocabulary)];
+        }
+
+        $url = 'https://www.' . implode('-', $words) . '.com';
+
+        // 50% chance that there will be some path, not root
+        if (mt_rand(0, 100) > 50) {
+            $path = [];
+            for ($i = 0; $i < mt_rand(1, 3); $i++) {
+                $path[] = self::$vocabulary[array_rand(self::$vocabulary)];
+            }
+
+            $path = implode('/', $path);
+
+            $url = "$url/$path";
+        }
+
+        // 50% chance of query args
+        if (mt_rand(0, 100) > 50) {
+            $query = [];
+            for ($i = 0; $i < mt_rand(1, 3); $i++) {
+                $query[] = self::$vocabulary[array_rand(self::$vocabulary)] . '=' . self::$vocabulary[array_rand(self::$vocabulary)];
+            }
+
+            $query = implode('&', $query);
+            $url = "$url?$query";
+        }
+
+        return $url;
     }
 }
