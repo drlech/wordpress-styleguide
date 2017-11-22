@@ -9,6 +9,11 @@
         iframe.addEventListener('load', () => {
             iframe.height = 1;
             iframe.height = iframe.contentWindow.document.body.scrollHeight;
+
+            // In some cases the iframe is still slightly smaller than the content.
+            setTimeout(() => {
+                iframe.height = iframe.contentWindow.document.body.scrollHeight;
+            }, 25);
         });
     }
 
