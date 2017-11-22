@@ -105,3 +105,30 @@ blockquote::before{
     font-weight: bold;
     text-align: center;
 }
+
+/* subfolderComponent.php */
+
+.subfolder-component {
+    padding: 10px;
+
+    border: 2px dashed black;
+}
+
+.subfolder-component .decorators {
+    overflow: hidden;
+}
+
+.subfolder-component .decorator {
+    width: 10px;
+    height: 10px;
+
+    float: left;
+    margin-left: 10px;
+
+    border-radius: 50%;
+    background-color: royalblue;
+}
+
+.subfolder-component .decorator:first-child {
+    margin-left: 0;
+}
