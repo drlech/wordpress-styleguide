@@ -253,6 +253,9 @@ class StringGen extends Generator {
     /**
      * Generate a random URL.
      *
+     * The URL will be made of one or few words separated by a dash.
+     * It can also randomly have a path after a domain, and few query args.
+     *
      * @return string
      */
     private function generateUrl() {
