@@ -82,6 +82,18 @@ class StringGen extends Generator {
     ];
 
     /**
+     * Predefined image sizes for generating random images.
+     *
+     * @var array
+     */
+    private static $imageSizes = [
+        'icon' => ['w' => 30, 'h' => 30],
+        'small' => ['w' => 100, 'h' => 80],
+        'medium' => ['w' => 640, 'h' => 480],
+        'large' => ['w' => 1600, 'h' => 900]
+    ];
+
+    /**
      * @inheritdoc
      */
     public function generate() {
@@ -125,6 +137,17 @@ class StringGen extends Generator {
         // Generates a sample URL.
         if ('url' === $this->params) {
             return $this->generateUrl();
+        }
+
+        // image:size, or image:WxH, image:W-WxH-H
+        // Generates random image with specified size.
+        // Size can be:
+        // - A word, in which case size is taken from predefined sizes
+        // defined as static property on this object.
+        // - Fixed size (widht x height).
+        // - Random size (width and height ranges to randomize from).
+        if (preg_match('/image:(.+)/', $this->params, $matches)) {
+            return $this->generateImage($matches[1]);
         }
 
         // If we didn't match a predefined rule, we return just those two words.
@@ -292,5 +315,21 @@ class StringGen extends Generator {
         }
 
         return $url;
+    }
+
+    private function generateImage($imageParams) {
+        print_r($imageParams);
+    }
+
+    private function generateImageWithPredefinedSize() {
+
+    }
+
+    private function generateImageFixedWidth() {
+
+    }
+
+    private function generateImageRandomSize() {
+
     }
 }

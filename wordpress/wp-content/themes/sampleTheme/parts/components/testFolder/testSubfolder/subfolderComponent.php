@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var string $image image:small
  * @var array $data assoc [text => string words:3, decorators => int 3-7]
  */
 
@@ -8,6 +9,8 @@ $decorators = $data['decorators'];
 ?>
 
 <div class="subfolder-component">
+    <img src="<?php echo $image; ?>" alt="">
+
     <div class="text"><?php echo $data['text']; ?></div>
 
     <div class="decorators">
