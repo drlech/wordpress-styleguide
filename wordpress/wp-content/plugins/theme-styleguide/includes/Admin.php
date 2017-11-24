@@ -7,10 +7,20 @@ defined('ABSPATH') or die();
 class Admin {
 
     /**
+     * Name (identifier) of the custom admin page representing
+     * the styleguide.
+     *
+     * @var string
+     */
+    private static $pageName = 'theme-styleguide';
+
+    /**
      * Initialize the Admin Panel functionality.
      */
     public static function init() {
         self::addSyleguideToMenu();
+        self::addStyleguideOptions();
+
         self::addStyleguideEndpoint();
         self::addPreviewEndpoint();
     }
@@ -24,32 +34,96 @@ class Admin {
                 __('Styleguide', 'theme-styleguide'),
                 __('Styleguide', 'theme-styleguide'),
                 'manage_options',
-                'theme-styleguide',
-                [__CLASS__, 'styleguideMenuRedirect'],
+                self::$pageName,
+                [__CLASS__, 'styleguidePageHtml'],
                 'dashicons-media-interactive'
             );
         });
     }
 
     /**
-     * If we added normal Admin Panel page, we'd have all the interface
-     * around it, which is not ideal.
-     * Instead we'll register a custom route for the page, and
-     * the admin panel link will just redirect there.
+     * Register sections and fields for styleguide settings.
      */
-    public static function styleguideMenuRedirect() {
+    private static function addStyleguideOptions() {
+        add_action('admin_init', function() {
+            register_setting(self::$pageName, 'theme-styleguide-settings');
+
+            add_settings_section(
+                'theme-styleguide-general-settings',
+                __('General Settings', 'theme-styleguide'),
+                null,
+                self::$pageName
+            );
+
+            add_settings_field(
+                'theme-styleguide-components-location',
+                __('Components folder', 'theme-styleguide'),
+                [__CLASS__, 'settingsComponentLocationHtml'],
+                self::$pageName,
+                'theme-styleguide-general-settings'
+            );
+        });
+    }
+
+    /**
+     * Output HTML for the page.
+     *
+     * Page contains some settings and a link to the styleguide itself.
+     *
+     * Styleguide is a separate page (outside of the admin panel), because we don't want
+     * to have admin panel menus around it.
+     */
+    public static function styleguidePageHtml() {
         ?>
 
             <div class="wrap">
-                <p><?php _e('Opening styleguide...', 'theme-styleguide'); ?></p>
+                <h1><?php echo get_admin_page_title(); ?></h1>
 
-                <script type="text/javascript">
-                window.location = "<?php bloginfo('url'); ?>/theme-styleguide";
-                </script>
+                <form action="options.php" method="POST">
+                    <?php
+
+                    settings_fields(self::$pageName);
+                    do_settings_sections(self::$pageName);
+                    submit_button(__('Save', 'theme-styleguide'));
+
+                    ?>
+                </form>
             </div>
 
         <?php
     }
+
+    /**
+     * Generate HTML for the following settins field:
+     * theme-styleguide-components-location
+     *
+     * Defines the path to the components folder, relative to theme.
+     */
+    public static function settingsComponentLocationHtml($args) {
+        $settings = get_option('theme-styleguide-settings');
+        $optionName = 'theme-styleguide-components-location';
+
+        if (!$settings[$optionName]) {
+            $settings[$optionName] = 'parts/components';
+        }
+
+        ?>
+
+        <input
+            type="text"
+            class="regular-text"
+            name="theme-styleguide-settings[<?php echo $optionName; ?>]"
+            value="<?php echo $settings[$optionName]; ?>"
+        >
+
+        <p class="description">
+            <?php _e('Path to the folder where components are, relative to the theme directory.', 'theme-styleguide'); ?>
+        </p>
+
+        <?php
+    }
+
+    /* Endpoints for the custom pages */
 
     /**
      * Register the endpoint for the styleguide page.
