@@ -332,6 +332,13 @@ class StringGen extends Generator {
         return "http://via.placeholder.com/${width}x${height}";
     }
 
+    /**
+     * Parse the params given to the "image:" format and determine how the
+     * placeholder image should be generated.
+     *
+     * @param string $imageParams
+     * @return string
+     */
     private function generateImageFromParams($imageParams) {
         if (preg_match('/(\d+)-(\d+)x(\d+)-(\d+)/', $imageParams, $matches)) {
             return $this->generateImageRandomSize($matches[1], $matches[2], $matches[3], $matches[4]);
@@ -344,10 +351,29 @@ class StringGen extends Generator {
         return $this->generateImageWithPredefinedSize($imageParams);
     }
 
+    /**
+     * Generate image with random dimensions.
+     *
+     * @param int $minWidth
+     * @param int $maxWidth
+     * @param int $minHeight
+     * @param int $maxHeight
+     * @return string
+     */
     private function generateImageRandomSize($minWidth, $maxWidth, $minHeight, $maxHeight) {
+        $width = mt_rand($minWidth, $maxWidth);
+        $height = mt_rand($minHeight, $maxHeight);
 
+        return $this->generateImage($width, $height);
     }
 
+    /**
+     * Generate image based on one of the predefined image sizes.
+     *
+     * @see self::$imageSizes
+     * @param string $sizeIdentifier
+     * @return string
+     */
     private function generateImageWithPredefinedSize($sizeIdentifier) {
         if (!isset(self::$imageSizes[$sizeIdentifier])) {
             return '';

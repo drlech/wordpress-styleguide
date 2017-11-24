@@ -1,6 +1,6 @@
 <?php
 /**
- * @var string $image image:300x100
+ * @var string $image image:300-400x10-100
  * @var array $data assoc [text => string words:3, decorators => int 3-7]
  */
 
