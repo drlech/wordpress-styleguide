@@ -328,7 +328,7 @@ class StringGen extends Generator {
      * @param int $height
      * @return string
      */
-    private function generateImage($width, $heigth) {
+    private function generateImage($width, $height) {
         return "http://via.placeholder.com/${width}x${height}";
     }
 
@@ -337,7 +337,7 @@ class StringGen extends Generator {
             return $this->generateImageRandomSize($matches[1], $matches[2], $matches[3], $matches[4]);
         }
 
-        if (preg_match('/(\d+)-(\d+)/', $imageParams, $matches)) {
+        if (preg_match('/(\d+)x(\d+)/', $imageParams, $matches)) {
             return $this->generateImage($matches[1], $matches[2]);
         }
 
