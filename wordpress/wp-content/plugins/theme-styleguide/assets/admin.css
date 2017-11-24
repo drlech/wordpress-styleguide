@@ -1,0 +1,10 @@
+.theme-styleguide-primary-link {
+    margin-bottom: 35px;
+}
+
+.theme-styleguide-primary-link a {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}

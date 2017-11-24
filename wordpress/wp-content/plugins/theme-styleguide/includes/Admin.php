@@ -20,6 +20,7 @@ class Admin {
     public static function init() {
         self::addSyleguideToMenu();
         self::addStyleguideOptions();
+        self::addStylguidePageScripts();
 
         self::addStyleguideEndpoint();
         self::addPreviewEndpoint();
@@ -66,6 +67,19 @@ class Admin {
     }
 
     /**
+     * Add styles and script only for this admin page.
+     */
+    private static function addStylguidePageScripts() {
+        add_action('admin_enqueue_scripts', function($hook) {
+            if ($hook !== 'toplevel_page_' . self::$pageName) {
+                return;
+            }
+
+            wp_enqueue_style('theme-styleguide-styles', Assets::getAsset('admin.css'));
+        });
+    }
+
+    /**
      * Output HTML for the page.
      *
      * Page contains some settings and a link to the styleguide itself.
@@ -77,7 +91,9 @@ class Admin {
         ?>
 
             <div class="wrap">
-                <h1><?php echo get_admin_page_title(); ?></h1>
+                <div class="theme-styleguide-primary-link">
+                    <a href="<?php bloginfo('url'); ?>/theme-styleguide" target="_blank"><?php _e('Open styleguide', 'theme-styleguide'); ?></a>
+                </div>
 
                 <form action="options.php" method="POST">
                     <?php
@@ -88,6 +104,10 @@ class Admin {
 
                     ?>
                 </form>
+
+                <div>
+
+                </div>
             </div>
 
         <?php
