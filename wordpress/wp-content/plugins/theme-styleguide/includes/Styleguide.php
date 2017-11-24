@@ -14,14 +14,6 @@ class Styleguide {
     private static $_instance = null;
 
     /**
-     * A path relative to the current theme where the components
-     * to be displayed in the styleguide are located.
-     *
-     * @var string
-     */
-    private static $componentsLocation = 'parts/components';
-
-    /**
      * Maps predefined pages slugs to the names of the views
      * that display them.
      *
@@ -295,7 +287,7 @@ class Styleguide {
      * @param string $filename
      */
     public function getComponentPath($path, $filename) {
-        $base = get_template_directory() . '/' . self::$componentsLocation;
+        $base = get_template_directory() . '/' . $this->getComponentsDir();
 
         if ('root' === $path) {
             $path = '';
@@ -308,7 +300,16 @@ class Styleguide {
         return "$base/$filename";
     }
 
-    /* Helpers for public API */
+    /* Private API */
+
+    private function getComponentsDir() {
+        $settings = get_option('theme-styleguide-settings');
+        if ($settings['theme-styleguide-components-location']) {
+            return $settings['theme-styleguide-components-location'];
+        }
+
+        return 'parts/components';
+    }
 
     private function getFoldersFromFiles($where, $name = '', $currentPath = '') {
         $result = [];
@@ -434,7 +435,7 @@ class Styleguide {
      * @param string $path Path to the component relative to the components folder.
      */
     private function getComponent($path = '') {
-        $fullPath = get_template_directory() . '/' . self::$componentsLocation;
+        $fullPath = get_template_directory() . '/' . $this->getComponentsDir();
         if ($path) {
             $fullPath .= '/' . $path;
         }
