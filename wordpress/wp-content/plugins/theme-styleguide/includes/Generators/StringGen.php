@@ -147,7 +147,7 @@ class StringGen extends Generator {
         // - Fixed size (widht x height).
         // - Random size (width and height ranges to randomize from).
         if (preg_match('/image:(.+)/', $this->params, $matches)) {
-            return $this->generateImage($matches[1]);
+            return $this->generateImageFromParams($matches[1]);
         }
 
         // If we didn't match a predefined rule, we return just those two words.
@@ -317,19 +317,43 @@ class StringGen extends Generator {
         return $url;
     }
 
-    private function generateImage($imageParams) {
-        print_r($imageParams);
+    /**
+     * Generate a placeholder image of a given width and height.
+     *
+     * This function uses generates an URL to the image placeholder service,
+     * and can be used by other functions to output the image URL after
+     * they determine the final width and height.
+     *
+     * @param int $width
+     * @param int $height
+     * @return string
+     */
+    private function generateImage($width, $heigth) {
+        return "http://via.placeholder.com/${width}x${height}";
     }
 
-    private function generateImageWithPredefinedSize() {
+    private function generateImageFromParams($imageParams) {
+        if (preg_match('/(\d+)-(\d+)x(\d+)-(\d+)/', $imageParams, $matches)) {
+            return $this->generateImageRandomSize($matches[1], $matches[2], $matches[3], $matches[4]);
+        }
+
+        if (preg_match('/(\d+)-(\d+)/', $imageParams, $matches)) {
+            return $this->generateImage($matches[1], $matches[2]);
+        }
+
+        return $this->generateImageWithPredefinedSize($imageParams);
+    }
+
+    private function generateImageRandomSize($minWidth, $maxWidth, $minHeight, $maxHeight) {
 
     }
 
-    private function generateImageFixedWidth() {
+    private function generateImageWithPredefinedSize($sizeIdentifier) {
+        if (!isset(self::$imageSizes[$sizeIdentifier])) {
+            return '';
+        }
 
-    }
-
-    private function generateImageRandomSize() {
-
+        $size = self::$imageSizes[$sizeIdentifier];
+        return $this->generateImage($size['w'], $size['h']);
     }
 }
