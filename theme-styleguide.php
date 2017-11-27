@@ -2,7 +2,7 @@
 /*
 Plugin Name: Styleguide
 Description: Automatically generates styleguide for the WordPress theme from its components.
-Version: 0.9.1
+Version: 0.10.1
 */
 
 namespace ThemeStyleguide;

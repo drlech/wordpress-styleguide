@@ -150,11 +150,22 @@ class StringGen extends Generator {
             return $this->generateImageFromParams($matches[1]);
         }
 
+        /**
+         * content
+         * Generates sample post/page content, a series of paragraphs with headings,
+         * images, etc.
+         */
+        if ('content' === $this->params) {
+            return $this->generateContent();
+        }
+
         // If we didn't match a predefined rule, we return just those two words.
         // They are ideal for displaying common things like button texts,
         // labels, input placeholders, etc.
         return 'Lorem ipsum';
     }
+
+    /* Lorem ipsum generators */
 
     /**
      * Generate given number of sentences.
@@ -273,49 +284,7 @@ class StringGen extends Generator {
         return ucfirst($word);
     }
 
-    /**
-     * Generate a random URL.
-     *
-     * The URL will be made of one or few words separated by a dash.
-     * It can also randomly have a path after a domain, and few query args.
-     *
-     * @return string
-     */
-    private function generateUrl() {
-        // URL will be a random word from the dictionary, with a 50% chance
-        // of two words.
-        $words = [self::$vocabulary[array_rand(self::$vocabulary)]];
-        if (mt_rand(0, 100) > 50) {
-            $words[] = self::$vocabulary[array_rand(self::$vocabulary)];
-        }
-
-        $url = 'https://www.' . implode('-', $words) . '.com';
-
-        // 50% chance that there will be some path, not root
-        if (mt_rand(0, 100) > 50) {
-            $path = [];
-            for ($i = 0; $i < mt_rand(1, 3); $i++) {
-                $path[] = self::$vocabulary[array_rand(self::$vocabulary)];
-            }
-
-            $path = implode('/', $path);
-
-            $url = "$url/$path";
-        }
-
-        // 50% chance of query args
-        if (mt_rand(0, 100) > 50) {
-            $query = [];
-            for ($i = 0; $i < mt_rand(1, 3); $i++) {
-                $query[] = self::$vocabulary[array_rand(self::$vocabulary)] . '=' . self::$vocabulary[array_rand(self::$vocabulary)];
-            }
-
-            $query = implode('&', $query);
-            $url = "$url?$query";
-        }
-
-        return $url;
-    }
+    /* Image generators */
 
     /**
      * Generate a placeholder image of a given width and height.
@@ -381,5 +350,143 @@ class StringGen extends Generator {
 
         $size = self::$imageSizes[$sizeIdentifier];
         return $this->generateImage($size['w'], $size['h']);
+    }
+
+    /* Content generators */
+
+    /**
+     * Generate sample content containing headings, paragraphs, images, and similar tags,
+     * similar to what can be generated via WordPress editor.
+     *
+     * @return string
+     */
+    private function generateContent() {
+        $content = '';
+
+        // Main heading
+        if (mt_rand(0, 100) < 50) {
+            $content .= '<h1>' . $this->generateSentence() . '</h1>';
+        }
+
+        // Few paragraphs
+        for ($i = 0; $i < mt_rand(3, 7); $i++) {
+            $content .= $this->generateContentParagraph();
+        }
+
+        return $content;
+    }
+
+    /**
+     * Generate a random paragraph of text (with <p> tags).
+     */
+    private function generateContentParagraph() {
+        // 50% chance of regular text paragraph
+        if (mt_rand(0, 100) < 50) {
+            return '<p>' . $this->generateSentences(mt_rand(5, 15)) . '</p>';
+        }
+
+        // Otherwise we will create something else, like a
+        // paragraph with picture, or a blockquote, etc.
+        $specialParagraph = mt_rand(1, 3);
+        switch ($specialParagraph) {
+            case 1:
+                return $this->generateContentParagraphWithImage();
+
+            case 2:
+                return $this->generateContentHeading();
+
+            default:
+                return $this->generateContentBlockquote();
+        }
+    }
+
+    /**
+     * Generate a paragraph (with <p> tags) containing an image.
+     * Image will have (random) WordPress alignment class.
+     */
+    private function generateContentParagraphWithImage() {
+        $image = $this->generateImage(300, 225);
+
+        $alignments = ['left', 'right', 'center'];
+        $alignment = $alignments[array_rand($alignments)];
+        $alignmentClass = "align${alignment}";
+
+        $paragraph = '<p>';
+
+        // Image
+        $paragraph .= "<img src=\"$image\" />";
+
+        // Paragraph text
+        $paragraph .= $this->generateSentences(mt_rand(5, 15));
+
+        // Close
+        $paragraph .= '</p>';
+
+        return $paragraph;
+    }
+
+    /**
+     * Generate random heading from h2 to h6.
+     *
+     * h1 is reserved to be main page heading and will occur
+     * only once.
+     */
+    private function generateContentHeading() {
+        $size = mt_rand(2, 6);
+
+        return "<h$size>" . $this->generateSentence() . "</h$size>";
+    }
+
+    /**
+     * Generate a blockquote with few random sentences.
+     */
+    private function generateContentBlockquote() {
+        return '<blockquote>' . $this->generateSentences(mt_rand(5, 15)) . '</blockquote>';
+    }
+
+    /* Other */
+
+    /**
+     * Generate a random URL.
+     *
+     * The URL will be made of one or few words separated by a dash.
+     * It can also randomly have a path after a domain, and few query args.
+     *
+     * @return string
+     */
+    private function generateUrl() {
+        // URL will be a random word from the dictionary, with a 50% chance
+        // of two words.
+        $words = [self::$vocabulary[array_rand(self::$vocabulary)]];
+        if (mt_rand(0, 100) > 50) {
+            $words[] = self::$vocabulary[array_rand(self::$vocabulary)];
+        }
+
+        $url = 'https://www.' . implode('-', $words) . '.com';
+
+        // 50% chance that there will be some path, not root
+        if (mt_rand(0, 100) > 50) {
+            $path = [];
+            for ($i = 0; $i < mt_rand(1, 3); $i++) {
+                $path[] = self::$vocabulary[array_rand(self::$vocabulary)];
+            }
+
+            $path = implode('/', $path);
+
+            $url = "$url/$path";
+        }
+
+        // 50% chance of query args
+        if (mt_rand(0, 100) > 50) {
+            $query = [];
+            for ($i = 0; $i < mt_rand(1, 3); $i++) {
+                $query[] = self::$vocabulary[array_rand(self::$vocabulary)] . '=' . self::$vocabulary[array_rand(self::$vocabulary)];
+            }
+
+            $query = implode('&', $query);
+            $url = "$url?$query";
+        }
+
+        return $url;
     }
 }
