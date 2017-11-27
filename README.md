@@ -4,14 +4,14 @@ Plugin that automatically generates a styleguide for the active theme.
 
 There are some requirements - theme must be made of components placed in their own folder, and each component must have a file doc documenting variables used by that file.
 
-Values of the variables are randomly generated, and descriptions of the variables in the file doc can be used to specify what values should the component previews contains.
+Values of the variables are randomly generated, and descriptions of the variables in the file doc can be used to specify what values should the component previews contain.
 
 Example:
 ```html
 <?php
 /**
  * @var string $title words:3
- * @var content $content sentences:5
+ * @var string $content sentences:5
  */
 
 ?>
