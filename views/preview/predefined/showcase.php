@@ -10,6 +10,10 @@ if ($paths) {
     foreach ($paths as $path) {
         $files = $styleguide->getFiles($path);
 
+        if (!$files) {
+            continue;
+        }
+
         foreach ($files as $file) {
             View::show('previews-preview', [
                 'path' => $path,

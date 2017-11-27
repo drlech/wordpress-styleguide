@@ -459,8 +459,24 @@ class Styleguide {
         $result = [];
         $files = scandir($this->getComponent($dir));
 
+        // A setting allows to ignore files from certain folders
+        $ignoreFiles = false;
+        $settings = get_option('theme-styleguide-settings');
+        if (isset($settings['theme-styleguide-ignore-files-from'])) {
+            $expressions = preg_split("/\n/", $settings['theme-styleguide-ignore-files-from']);
+
+            foreach ($expressions as $expression) {
+                if (preg_match("/$expression/", $dir)) {
+                    $ignoreFiles = true;
+
+                    break;
+                }
+            }
+        }
+
+        // Check files and recurse
         foreach ($files as $index => $file) {
-            if ('.' === $file || '..' === $file) {
+            if ('.' === $file || '..' === $file || $ignoreFiles) {
                 continue;
             }
 

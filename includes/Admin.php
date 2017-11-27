@@ -43,6 +43,19 @@ class Admin {
     }
 
     /**
+     * Add styles and script only for this admin page.
+     */
+    private static function addStylguidePageScripts() {
+        add_action('admin_enqueue_scripts', function($hook) {
+            if ($hook !== 'toplevel_page_' . self::$pageName) {
+                return;
+            }
+
+            wp_enqueue_style('theme-styleguide-styles', Assets::getAsset('admin.css'));
+        });
+    }
+
+    /**
      * Register sections and fields for styleguide settings.
      */
     private static function addStyleguideOptions() {
@@ -56,6 +69,7 @@ class Admin {
                 self::$pageName
             );
 
+            // Location of all components
             add_settings_field(
                 'theme-styleguide-components-location',
                 __('Components folder', 'theme-styleguide'),
@@ -63,19 +77,18 @@ class Admin {
                 self::$pageName,
                 'theme-styleguide-general-settings'
             );
-        });
-    }
 
-    /**
-     * Add styles and script only for this admin page.
-     */
-    private static function addStylguidePageScripts() {
-        add_action('admin_enqueue_scripts', function($hook) {
-            if ($hook !== 'toplevel_page_' . self::$pageName) {
-                return;
-            }
-
-            wp_enqueue_style('theme-styleguide-styles', Assets::getAsset('admin.css'));
+            // Ignore files from given folder
+            // This setting will ignore php files contained within a given folder,
+            // but will still recurse it. That option is useful for when we have
+            // dedicated folder for non-component things, like scenes.
+            add_settings_field(
+                'theme-styleguide-ignore-files-from',
+                __('Ignore files from', 'theme-styleguide'),
+                [__CLASS__, 'settingsIgnoreFilesFrom'],
+                self::$pageName,
+                'theme-styleguide-general-settings'
+            );
         });
     }
 
@@ -114,12 +127,12 @@ class Admin {
     }
 
     /**
-     * Generate HTML for the following settins field:
+     * Generate HTML for the following settings field:
      * theme-styleguide-components-location
      *
      * Defines the path to the components folder, relative to theme.
      */
-    public static function settingsComponentLocationHtml($args) {
+    public static function settingsComponentLocationHtml() {
         $settings = get_option('theme-styleguide-settings');
         $optionName = 'theme-styleguide-components-location';
 
@@ -138,6 +151,32 @@ class Admin {
 
         <p class="description">
             <?php _e('Path to the folder where components are, relative to the theme directory.', 'theme-styleguide'); ?>
+        </p>
+
+        <?php
+    }
+
+    /**
+     * Generate HTML for the following settings field:
+     * theme-styleguide-ignore-files-from
+     *
+     * Specify files from which folders to ignore and not display
+     * in the styleguide.
+     */
+    public static function settingsIgnoreFilesFrom() {
+        $settings = get_option('theme-styleguide-settings');
+        $optionName = 'theme-styleguide-ignore-files-from';
+
+        ?>
+
+        <textarea
+            name="theme-styleguide-settings[<?php echo $optionName; ?>]"
+            class="regular-text"
+            rows="3"
+        ><?php echo $settings[$optionName]; ?></textarea>
+
+        <p class="description">
+            <?php _e('Accepts regex. Each expression in new line.', 'theme-styleguide'); ?>
         </p>
 
         <?php
