@@ -71,7 +71,7 @@ class Admin {
 
             // Location of all components
             add_settings_field(
-                'theme-styleguide-components-location',
+                'components-location',
                 __('Components folder', 'theme-styleguide'),
                 [__CLASS__, 'settingsComponentLocationHtml'],
                 self::$pageName,
@@ -83,7 +83,7 @@ class Admin {
             // but will still recurse it. That option is useful for when we have
             // dedicated folder for non-component things, like scenes.
             add_settings_field(
-                'theme-styleguide-ignore-files-from',
+                'ignore-files-from',
                 __('Ignore files from', 'theme-styleguide'),
                 [__CLASS__, 'settingsIgnoreFilesFrom'],
                 self::$pageName,
@@ -134,7 +134,7 @@ class Admin {
      */
     public static function settingsComponentLocationHtml() {
         $settings = get_option('theme-styleguide-settings');
-        $optionName = 'theme-styleguide-components-location';
+        $optionName = 'components-location';
 
         if (!$settings[$optionName]) {
             $settings[$optionName] = 'parts/components';
@@ -165,7 +165,7 @@ class Admin {
      */
     public static function settingsIgnoreFilesFrom() {
         $settings = get_option('theme-styleguide-settings');
-        $optionName = 'theme-styleguide-ignore-files-from';
+        $optionName = 'ignore-files-from';
 
         ?>
 

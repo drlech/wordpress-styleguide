@@ -305,8 +305,8 @@ class Styleguide {
 
     private function getComponentsDir() {
         $settings = get_option('theme-styleguide-settings');
-        if ($settings['theme-styleguide-components-location']) {
-            return $settings['theme-styleguide-components-location'];
+        if ($settings['components-location']) {
+            return $settings['components-location'];
         }
 
         return 'parts/components';
@@ -463,8 +463,8 @@ class Styleguide {
         // A setting allows to ignore files from certain folders
         $ignoreFiles = false;
         $settings = get_option('theme-styleguide-settings');
-        if (isset($settings['theme-styleguide-ignore-files-from'])) {
-            $expressions = preg_split("/\n/", $settings['theme-styleguide-ignore-files-from']);
+        if (isset($settings['ignore-files-from'])) {
+            $expressions = preg_split("/\n/", $settings['ignore-files-from']);
 
             foreach ($expressions as $expression) {
                 if (preg_match("/$expression/", $dir)) {
