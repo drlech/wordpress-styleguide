@@ -51,16 +51,18 @@ namespace ThemeStyleguide;
 
             echo '<hr>';
 
-            // Display menu item corresponding to the root of the
-            // folder containing the components
-            View::show('menu-item', [
-                'item' => [
-                    'name' => 'root',
-                    'link' => $styleguide->getLinkFor('root'),
-                    'isActive' => $styleguide->isMenuItemActive('root'),
-                    'isActiveParent' => false
-                ]
-            ]);
+            if ($styleguide->getFiles('root')) {
+                // Display menu item corresponding to the root of the
+                // folder containing the components
+                View::show('menu-item', [
+                    'item' => [
+                        'name' => 'root',
+                        'link' => $styleguide->getLinkFor('root'),
+                        'isActive' => $styleguide->isMenuItemActive('root'),
+                        'isActiveParent' => false
+                    ]
+                ]);
+            }
 
             // Display (nested) menu structure reflecting the folder structure
             // of the components folder
