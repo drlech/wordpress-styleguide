@@ -65,6 +65,7 @@ class Styleguide {
         }
 
         $this->prepare();
+        $this->files = $this->removeEmpties($this->files);
     }
 
     /**
@@ -494,6 +495,26 @@ class Styleguide {
         }
 
         return $result;
+    }
+
+    /**
+     * Remove (recursively) empty entries from given array.
+     *
+     * @param array $target
+     * @return array
+     */
+    private function removeEmpties($target) {
+        foreach ($target as $key => $value) {
+            if (is_array($value)) {
+                $target[$key] = $this->removeEmpties($target[$key]);
+            }
+
+            if (empty($target[$key])) {
+                unset($target[$key]);
+            }
+        }
+
+        return $target;
     }
 
     /* Helper functions displaying general styleguide info */
