@@ -85,7 +85,19 @@ class Admin {
             add_settings_field(
                 'ignore-files-from',
                 __('Ignore files from', 'theme-styleguide'),
-                [__CLASS__, 'settingsIgnoreFilesFrom'],
+                [__CLASS__, 'settingsIgnoreFilesFromHtml'],
+                self::$pageName,
+                'theme-styleguide-general-settings'
+            );
+
+            // If each component has its own folder then browsing them would be
+            // difficult. In that case it would be better to display the list
+            // of all components when viewing the parent folder.
+            // That's what this option does.
+            add_settings_field(
+                'one-component-per-folder',
+                __('One component per folder', 'theme-styleguide'),
+                [__CLASS__, 'settingsOneComponentPerFolderHtml'],
                 self::$pageName,
                 'theme-styleguide-general-settings'
             );
@@ -128,7 +140,7 @@ class Admin {
 
     /**
      * Generate HTML for the following settings field:
-     * theme-styleguide-components-location
+     * components-location
      *
      * Defines the path to the components folder, relative to theme.
      */
@@ -158,12 +170,12 @@ class Admin {
 
     /**
      * Generate HTML for the following settings field:
-     * theme-styleguide-ignore-files-from
+     * ignore-files-from
      *
      * Specify files from which folders to ignore and not display
      * in the styleguide.
      */
-    public static function settingsIgnoreFilesFrom() {
+    public static function settingsIgnoreFilesFromHtml() {
         $settings = get_option('theme-styleguide-settings');
         $optionName = 'ignore-files-from';
 
@@ -177,6 +189,33 @@ class Admin {
 
         <p class="description">
             <?php _e('Accepts regex. Each expression in new line.', 'theme-styleguide'); ?>
+        </p>
+
+        <?php
+    }
+
+    /**
+     * Generate HTML for the following settings field:
+     * one-component-per-folder
+     *
+     * When each component has its own folder browsing them is difficult.
+     * Selecting this option will display the list of components
+     * when viewing the parent folder.
+     */
+    public static function settingsOneComponentPerFolderHtml() {
+        $settings = get_option('theme-styleguide-settings');
+        $optionName = 'one-component-per-folder';
+
+        ?>
+
+        <input
+            type="checkbox"
+            name="theme-styleguide-settings[<?php echo $optionName; ?>]"
+            <?php checked('on', $settings[$optionName]); ?>
+        >
+
+        <p class="description">
+            <?php _e('When display list of components when viewing parent folder.', 'theme-styleguide'); ?>
         </p>
 
         <?php

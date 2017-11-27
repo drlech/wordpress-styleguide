@@ -258,7 +258,10 @@ class Styleguide {
      * @param string $path
      */
     public function getFiles($path = 'root') {
+        $settings = get_option('theme-styleguide-settings');
+
         $files = null;
+        $components = [];
         if ('root' === $path || !$path) {
             $files = $this->files;
         } else {
@@ -270,15 +273,32 @@ class Styleguide {
             return false;
         }
 
+        // Display all children components
+        if (isset($settings['one-component-per-folder'])) {
+            $folders = array_keys(array_filter($files, function($item) {
+                return is_array($item);
+            }));
+
+            foreach ($folders as $folder) {
+                $componentFiles = $this->getFiles("$path/$folder");
+
+                if ($componentFiles) {
+                    $components = array_merge($components, array_map(function($item) use ($folder) {
+                        return "$folder/$item";
+                    }, $componentFiles));
+                }
+            }
+        }
+
         // Take only files, no folders
-        $files = array_filter($files, function($item) {
+        $components = array_merge($components, array_filter($files, function($item) {
             return !is_array($item);
-        });
+        }));
 
         // In alphabetical order
-        sort($files);
+        sort($components);
 
-        return $files;
+        return $components;
     }
 
     /**
