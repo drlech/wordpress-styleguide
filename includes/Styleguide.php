@@ -321,9 +321,7 @@ class Styleguide {
         return "$base/$filename";
     }
 
-    /* Private API */
-
-    private function getComponentsDir() {
+    public function getComponentsDir() {
         $settings = get_option('theme-styleguide-settings');
         if ($settings['components-location']) {
             return $settings['components-location'];
@@ -331,6 +329,8 @@ class Styleguide {
 
         return 'parts/components';
     }
+
+    /* Private API */
 
     private function getFoldersFromFiles($where, $name = '', $currentPath = '') {
         $result = [];

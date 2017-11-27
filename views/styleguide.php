@@ -23,7 +23,7 @@ namespace ThemeStyleguide;
         <h1><?php echo $styleguide->getThemeName(); ?></h1>
         <div class="additional-header-info"><?php
             _e(
-                sprintf('Components loaded from: %s', 'parts/components'),
+                sprintf('Components loaded from: %s', $styleguide->getComponentsDir()),
                 'theme-styleguide'
             );
         ?></div>
