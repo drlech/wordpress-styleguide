@@ -1,6 +1,6 @@
 # WordPress styleguide
 
-Plugin automatically generates a styleguide for the active theme.
+Plugin that automatically generates a styleguide for the active theme.
 
 There are some requirements - theme must be made of components placed in their own folder, and each component must have a file doc documenting variables used by that file.
 
